@@ -1,0 +1,160 @@
+﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserVM
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var sno = 0;
+    var sno1 = 0;
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <!-- .row -->
+        <div class="row m-t-20">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success" style="float: right;" role="alert">
+                    <b>@TempData["Message"]</b>
+                </div>
+            }
+            @if (TempData["DeleteMessage"] != null)
+            {
+                <div class="alert alert-danger" style="float: right;" role="alert">
+                    <b>@TempData["DeleteMessage"]</b>
+                </div>
+            }
+        <div class="panel panel-info">
+            <div class="panel-heading ">My Profile </div>
+            <div class="white-box">
+                <div class="scrollable">
+                    <div class="table-responsive">
+                        <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
+                            <thead>
+                                <tr>
+                                    <th class="footable-sortable text-center">S.No<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">FirstName<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">LastName<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Martial Status<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">DOB <span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Gender<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Address<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">City<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Province<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Zip Code<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Email<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Phone<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable">Action<span class="footable-sort-indicator"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+
+                                    sno = sno + 1;
+                                    <tr role="row" class="line-content">
+                                        <td class="text-center">@sno</td>
+                                        <td class="text-center">@Model.FirstName</td>
+                                        <td class="text-center">@Model.LastName</td>
+                                        <td class="text-center">@Model.MaritalStatus</td>
+                                        <td class="text-center">@(Model.DOB != null ? string.Format("{0:MMMM d , yyyy}", Model.DOB) : "")</td>
+                                        <td class="text-center">@Model.GenderName</td>
+                                        <td class="text-center">@Model.Address</td>
+                                        <td class="text-center">@Model.City</td>
+                                        <td class="text-center">@Model.Province</td>
+                                        <td class="text-center">@Model.ZipCode</td>
+                                        <td class="text-center">@Model.Email</td>
+                                        <td class="text-center">@Model.CellPhone</td>
+                                        <td class="text-center">
+                                            <span class="delete"><a href="~/Staff/Savestaff/@Model.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Request Update</a></span>
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                            <div class="h2">@Model.FirstName @Model.LastName </div>
+                            <td>
+                                <dl class="dl-horizontal">
+                                    <dt>
+                                        S.No
+                                    </dt>
+                                    <dd>
+                                        @Model.LastName, @Model.FirstName
+                                    </dd>
+                                    <dt>
+                                        Name
+                                    </dt>
+                                    <dd>
+                                        @Model.LastName, @Model.FirstName
+                                    </dd>
+                                    <dt>
+                                        User Name
+                                    </dt>
+                                    <dd>
+                                        @Model.UserName
+                                    </dd>
+                                    <dt>
+                                        Date of Birth
+                                    </dt>
+                                    <dd>
+                                        @Model.DOB
+                                    </dd>
+                                    <dt>
+                                        Gender
+                                    </dt>
+                                    <dd>
+                                        @Model.GenderName
+                                    </dd>
+                                    <dt>
+                                        Address
+                                    </dt>
+                                    <dd>
+                                        @Model.Address, @Model.City, @Model.Province, @Model.ZipCode
+                                    </dd>
+                                    <dt>
+                                        Email
+                                    </dt>
+                                    <dd>
+                                        @Model.Email
+                                    </dd>
+                                    <dt>
+                                        Phone
+                                    </dt>
+                                    <dd>
+                                        Cell: @Model.CellPhone <br />
+                                        Home: @Model.HomePhone
+                                    </dd>
+                                    <dt class="text-center">
+                                        Action
+                                    </dt>
+                                    <dd><a href="~/Staff/Savestaff/@Model.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Request Update</a></dd>
+                                </dl>
+                            </td>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+    
+
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.material.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({ "pageLength": 10 });
+        });
+        $(document).ready(function () {
+            $('#example1').DataTable({ "pageLength": 10 });
+        });
+    </script>
+}
+
+
+

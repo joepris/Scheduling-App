@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="">
+    <title>Nursing Staff Planning and Scheduling Excellence</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <!-- Menu CSS -->
+    <link href="~/Content/less/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+    <!-- toast CSS -->
+    <link href="~/Content/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <!-- morris CSS -->
+    <link href="~/Content/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
+    <!-- chartist CSS -->
+    <link href="~/Content/plugins/bower_components/chartist-js/dist/chartist.min.css" rel="stylesheet">
+    <link href="~/Content/plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+    <!-- Calendar CSS -->
+    <link href="~/Content/plugins/bower_components/calendar/dist/fullcalendar.css" rel="stylesheet" />
+    <!-- animation CSS -->
+    <link href="~/Content/css/animate.css" rel="stylesheet">
+    <!-- color CSS -->
+    <link href="~/Content/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/css/colors/default.css" id="theme" rel="stylesheet">
+    <link href="~/Content/plugins/bower_components/timepicker/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="~/Content/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="fix-header">
+
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default navbar-static-top m-b-0">
+            <div class="navbar-header">
+                <div class="top-left-part">
+                    <!-- Logo -->
+                    <a class="logo" href="#">
+
+                        <span class="hidden-xs">
+
+                        </span>
+                    </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right pull-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"><b class="hidden-xs">@User.Identity.Name</b><span class="caret"></span> </a>
+                        <ul class="dropdown-menu dropdown-user animated flipInY">
+                            <li role="separator" class="divider"></li>
+                            <li><a href=@Url.Action("Logout","Login")><i class="fa fa-power-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+        </nav>
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav slimscrollsidebar">
+                <div class="sidebar-head">
+                    <h3><span class="fa-fw open-close"><i class="ti-close ti-menu"></i></span> <span class="hide-menu">Navigation</span></h3>
+                </div>
+                <div class="user-profile">
+                    <div class="dropdown user-pro-body">
+                        <div><img src="~/Content/plugins/images/users/varun.jpg" alt="user-img" class="img-circle"></div>
+                        <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
+                        <ul class="dropdown-menu animated flipInY">
+                            <li role="separator" class="divider"></li>
+                            <li><a href=@Url.Action("Logout","Login")><i class="fa fa-power-off"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="nav" id="side-menu">
+
+
+                    @if (this.User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href="/Home/Index" class="waves-effect"><i class="mdi mdi-av-timer fa-fw" data-icon="v"></i> <span class="hide-menu"> Dashboard  </span></a>
+                        </li>
+                        <li>
+                            <a href="/Home/About" class="waves-effect"><i class="mdi mdi-av-timer fa-fw" data-icon="v"></i> <span class="hide-menu"> About  </span></a>
+                        </li>
+                        <li>
+                            <a href="/Home/Contact" class="waves-effect"><i class="mdi mdi-av-timer fa-fw" data-icon="v"></i> <span class="hide-menu"> Contact  </span></a>
+                        </li>
+
+                        <li class="devider"></li>
+                        <li>
+                            <a href="/Admin/AllStaffList" class="waves-effect"><i class="mdi mdi-clipboard-text fa-fw"></i> <span class="hide-menu">Staff List</span></a>
+                        </li>
+
+
+                    }
+
+                    @if (this.User.IsInRole("staff"))
+                    {
+                        <li>
+                            <a href="/Home/About" class="waves-effect"><i class="mdi mdi-av-timer fa-fw" data-icon="v"></i> <span class="hide-menu"> About  </span></a>
+                        </li>
+                        <li>
+                            <a href="/Home/Contact" class="waves-effect"><i class="mdi mdi-av-timer fa-fw" data-icon="v"></i> <span class="hide-menu"> Contact  </span></a>
+                        </li>
+                        <li class="devider"></li>
+                        <li>
+                            <a href="/staff/profile" class="waves-effect"><i class="mdi mdi-clipboard-text fa-fw"></i> <span class="hide-menu">	Staff Profile </span></a>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+
+
+        @RenderBody()
+    </div>
+    <script src="~/Content/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Content/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="~/Content/plugins/bower_components/sidebar-nav/dist/sidebar-nav.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="~/Content/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="~/Content/js/waves.js"></script>
+    <!--Counter js -->
+    <script src="~/Content/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
+    <script src="~/Content/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+
+    <script src="~/Content/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+
+    <script src="~/Content/js/custom.min.js"></script>
+    <script src="~/Content/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+
+
+    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+    <script type="text/javascript" src="~/scripts/bootstrap-datetimepicker.js"></script>
+
+    <script src="~/Content/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+    <script src="~/Content/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        window.setTimeout(function () {
+            $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
+        //$(document).ready(function () {
+        //    $('input[type=datetime]').datetimepicker({
+        //        format: "MM/DD/YYYY "
+
+        //    });
+
+        //});
+        
+       
+
+
+
+
+
+
+    </script>
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+       
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row m-t-20">
+            <div class="panel panel-info">
+                <div class="panel-heading "> @ViewBag.Title </div>
+                <div class="white-box">
+                    <div class="table-responsive">
+                        <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
+                            <div class="h3">@ViewBag.Message</div>
+
+                            <p>
+                                Silicon Valley,<br />
+                                East Bay, CA<br />
+                                <abbr title="Phone">P:</abbr>
+                                425.555.0100
+                            </p>
+
+                            <p>
+                                <strong>Support:</strong>   <a href=#>bizsupport@mgbs.com</a><br />
+                                <strong>Marketing:</strong> <a href=#>Marketing@example.com</a>
+                            </p>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

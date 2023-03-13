@@ -1,0 +1,198 @@
+﻿@model NursingStaffPlanningandSchedulingExcellence.Models.ShiftScheduleVM
+@{
+    ViewBag.Title = "AddStaff";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var sno = 0;
+}
+<style>
+    .panel-info > .panel-heading {
+        color: white !important;
+        background-color: #2f323e !important;
+        border-color: #2f323e !important;
+    }
+    .user-profile .user-pro-body {
+        display: block;
+        margin-top: 41px !important;
+    }
+    button.btn.btn-primary.btn-block {
+        margin-top: 25px;
+    }
+    .col-md-12.offset-md-1 {
+        margin-left: 0;
+    }
+
+    .col.offset-md-1 {
+        margin-left: 0;
+    }
+</style>
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row m-t-20">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success" style="float: right;" role="alert">
+                    <b>@TempData["Message"]</b>
+                </div>
+            }
+            @if (TempData["DeleteMessage"] != null)
+            {
+                <div class="alert alert-danger" style="float: right;" role="alert">
+                    <b>@TempData["DeleteMessage"]</b>
+                </div>
+            }
+            <div class="panel panel-info">
+                <div class="panel-heading "> Add Schedule Shift </div>
+                <div class="white-box">
+                    @using (Html.BeginForm("ShiftSchedules", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(model => model.UserId)
+                        @Html.HiddenFor(model => model.Id)
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 offset-md-1">
+                                    <form id="form_create_appointment">
+                                            <div class="col-md-3 form-group">
+                                                <label class="required">Start Date</label>
+                                                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Start Date" } })
+                                            
+                                            </div>
+
+                                            <div class="col-md-3 form-group">
+                                                <label class="required">End Date</label>
+                                                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = "End Date" } })
+                                            </div>
+
+
+                                            <div class="col-md-3 form-group">
+                                                <label class="required">Select Shift </label>
+                                                @Html.DropDownListFor(model => model.ShiftId, new List<SelectListItem>
+                                                                   {
+                                                                   new SelectListItem{ Text="Day", Value = "1" },
+                                                                   new SelectListItem{ Text="Evening", Value = "2" },
+                                                                   new SelectListItem{ Text="Night", Value = "3" },
+                                                                   }, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ShiftId, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="form-row">
+
+                                                <div class="col-md-3 form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block">Save</button>
+                                                </div>
+                                            </div>
+                                    </form>
+                                </div>
+                                <div class="col offset-md-1">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Scheduled Shift</h3>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered table-hover table-striped table-sm" id="appointment_list">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col" class="text-center align-middle">Sno.</th>
+                                                <th scope="col" class="text-center align-middle">Start Date</th>
+                                                <th scope="col" class="text-center align-middle">End Date</th>
+                                                <th scope="col" class="text-center align-middle">Shift </th>
+                                                <th scope="col" class="text-center align-middle">Start time</th>
+                                                <th scope="col" class="text-center align-middle">End time</th>
+                                                <th scope="col" class="text-center align-middle">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.ShiftScheduleList != null)
+                                            {
+                                                foreach (var item in Model.ShiftScheduleList)
+                                                {
+                                                    sno = sno + 1;
+                                                    <tr role="row" class="line-content">
+                                                        <td class="text-center">@sno</td>
+                                                        <td class="text-center">@(item.StartDate != null ? string.Format("{0:MMMM d , yyyy}", item.StartDate) : "")</td>
+                                                        <td class="text-center">@(item.EndDate != null ? string.Format("{0:MMMM d , yyyy}", item.EndDate) : "")</td>
+                                                        @if (item.ShiftId == 1)
+                                                        {
+                                                            <td class="text-center">Day</td>
+
+                                                        }
+                                                        @if (item.ShiftId == 2)
+                                                        {
+                                                            <td class="text-center">Evening</td>
+
+                                                        }
+                                                        @if (item.ShiftId == 3)
+                                                        {
+                                                            <td class="text-center">Night</td>
+
+                                                        }
+                                                        <td class="text-center">@(item.StartDate.Value.ToString("hh:mm tt"))</td>
+                                                        <td class="text-center">@(item.EndDate.Value.ToString("hh:mm tt"))</td>
+                                                        <td class="text-center">
+                                                            <span class="delete"><a href="~/Admin/ShiftSchedule/@item.Id/?userid=@item.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Edit</a></span>
+                                                            <span class="delete"><a href="~/Admin/DeleteShiftSchedule/@item.Id/?userid=@item.UserId" onclick="return confirm('Are you sure you wish to Delete item ?');" class="fcbtn btn btn-danger btn-outline btn-1f">Delete</a></span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+<link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+
+<script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
+
+<script>
+    $('#StartDate').datetimepicker({
+       // format: 'DD-MM-YYYY LT'
+    });
+    $('#EndDate').datetimepicker({
+        //format: 'DD-MM-YYYY LT'
+    });
+
+
+</script>
+

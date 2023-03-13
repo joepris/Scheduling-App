@@ -1,0 +1,66 @@
+﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserVM
+@{
+    ViewBag.Title = "AllStaffList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var sno = 0;
+    var sno1 = 0;
+}
+<style>
+    
+</style>
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row m-t-20">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success" style="float: right;" role="alert">
+                    <b>@TempData["Message"]</b>
+                </div>
+            }
+            <div class="panel panel-info">
+                <div class="panel-heading "> MGBS Admin Dashboard </div>
+                <div class="white-box">
+                    <div class="table-responsive">
+                        <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
+                            <thead>
+                                <tr>
+                                    <th class="footable-sortable text-center">S.No<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable text-center">Name<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable text-center">Cell Phone<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable text-center">Date Of Birth<span class="footable-sort-indicator"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.userList != null)
+                                {
+                                    foreach (var item in Model.userList)
+                                    {
+                                        sno = sno + 1;
+                                        <tr role="row" class="line-content">
+                                            <td class="text-center">@sno</td>
+                                            <td class="text-center">@item.LastName, @item.FirstName</td>
+                                            <td class="text-center">@item.CellPhone</td>
+                                            <td class="text-center">@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.material.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({ "pageLength": 10 });
+            $('#example1').DataTable({ "pageLength": 10 });
+        });
+    </script>
+}
+

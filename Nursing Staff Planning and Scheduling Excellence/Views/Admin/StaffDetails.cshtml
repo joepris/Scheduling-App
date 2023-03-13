@@ -1,0 +1,88 @@
+﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserVM
+
+@{
+    ViewBag.Title = "Staff Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row m-t-20">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success" style="float: right;" role="alert">
+                    <b>@TempData["Message"]</b>
+                </div>
+            }
+            @if (TempData["DeleteMessage"] != null)
+            {
+                <div class="alert alert-danger" style="float: right;" role="alert">
+                    <b>@TempData["DeleteMessage"]</b>
+                </div>
+            }
+            <div class="panel panel-info">
+                <div class="panel-heading "> @ViewBag.Title </div>
+                <div class="white-box">
+                    <div class="table-responsive">
+                        <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
+                            <div class="h2">@Model.FirstName @Model.LastName </div>
+                            <td>
+                                <dl class="dl-horizontal">
+                                    <dt>
+                                        S.No
+                                    </dt>
+                                    <dd>
+                                        @Model.LastName, @Model.FirstName
+                                    </dd>
+                                    <dt>
+                                        Name
+                                    </dt>
+                                    <dd>
+                                        @Model.LastName, @Model.FirstName
+                                    </dd>
+                                    <dt>
+                                        User Name
+                                    </dt>
+                                    <dd>
+                                        @Model.UserName
+                                    </dd>
+                                    <dt>
+                                        Date of Birth
+                                    </dt>
+                                    <dd>
+                                        @Model.DOB
+                                    </dd>
+                                    <dt>
+                                        Gender
+                                    </dt>
+                                    <dd>
+                                        @Model.GenderName
+                                    </dd>
+                                    <dt>
+                                        Address
+                                    </dt>
+                                    <dd>
+                                        @Model.Address, @Model.City, @Model.Province, @Model.ZipCode
+                                    </dd>
+                                    <dt>
+                                        Email
+                                    </dt>
+                                    <dd>
+                                        @Model.Email
+                                    </dd>
+                                    <dt>
+                                        Phone
+                                    </dt>
+                                    <dd>
+                                        Cell: @Model.CellPhone <br />
+                                        Home: @Model.HomePhone
+                                    </dd>
+                                </dl>
+                            </td>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
