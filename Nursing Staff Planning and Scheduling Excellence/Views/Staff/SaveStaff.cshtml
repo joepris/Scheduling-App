@@ -1,20 +1,20 @@
 ﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserVM
 @{
-    ViewBag.Title = "Addstaff";
+    ViewBag.Title = "AddStaff";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div id="page-wrapper">
     <div class="container-fluid">
-        @using (Html.BeginForm("SaveStaff", "staff", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("SaveStaff", "Staff", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.HiddenFor(model => model.UserId)
             <div class="row m-t-20">
                 <div class="panel panel-info">
-                    <div class="panel-heading ">ADD Staff </div>
+                    <div class="panel-heading ">Request Update</div>
                     <div class="white-box">
                         <form class="form-horizontal">
-                            <div class="row">
+                            <div class="row m-t-10">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-12"><span class="help">  First Name</span></label>
@@ -29,11 +29,12 @@
                                         <label class="col-md-12"><span class="help">  Last Name</span></label>
                                         <div class="col-md-12">
                                             @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+                                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row m-t-10">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-12"><span class="help">  User Name</span></label>
@@ -47,16 +48,18 @@
                                         <label class="col-md-12"><span class="help">  Password</span></label>
                                         <div class="col-md-12">
                                             @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+                                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row m-t-10">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-12"><span class="help"> Marital Status</span></label>
                                         <div class="col-md-12">
                                             @Html.DropDownListFor(model => model.MaritalStatusId, new SelectList(Model.maritalsList, "MaritalStatusId", "MaritalStatusName"), "Select Marital Status", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.MaritalStatusId, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
@@ -64,17 +67,20 @@
                                     <div class="form-group">
                                         <label class="col-md-12"><span class="help"> Date of Birth</span></label>
                                         <div class="col-md-12">
-                                            @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control datetimepicker", placeholder = " Date Of Birth" } })
+                                            @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control datetimepicker", type = "date", placeholder = " Date Of Birth" } })
+                                            @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row m-t-10">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-12"><span class="help"> Gender</span></label>
                                         <div class="col-md-12">
+
                                             @Html.DropDownListFor(model => model.Sex, new SelectList(Model.gendersList, "GenderId", "GenderName"), "Select Gender", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +93,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row m-t-10">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-12"><span class="help"> City</span></label>
@@ -98,14 +104,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-12"><span class="help"> State</span></label>
+                                        <label class="col-md-12"><span class="help"> Province</span></label>
                                         <div class="col-md-12">
-                                            @Html.EditorFor(model => model.Province, new { htmlAttributes = new { @class = "form-control", placeholder = " State" } })
+                                            @Html.EditorFor(model => model.Province, new { htmlAttributes = new { @class = "form-control", placeholder = " Province" } })
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row m-t-10">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-12"><span class="help"> Zip Code</span></label>
@@ -123,7 +129,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row m-t-10">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-sm-12">Cell Phone</label>
@@ -132,22 +138,16 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                            </div>
-                            @*<div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-sm-12">User Role</label>
-                                        <div class="col-sm-12">
-                                            @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.rolesList, "RoleId", "RoleName"), "Select Role", new { @class = "form-control" })
+                                        <label class="col-sm-12">Evaluate</label>
+                                        <div class="col-lg-2 col-sm-4 col-xs-12">
+                                            <button type="submit" class="btn btn-block btn-info ">Submit</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>*@
-                            <div class="col-lg-2 col-sm-4 col-xs-12">
-                                <button type="submit" class="btn btn-block btn-info ">Submit</button>
                             </div>
+                            
                         </form>
                     </div>
                 </div>
