@@ -26,11 +26,12 @@
                         <div class="col-sm-2">
                             <button onclick="window.location.href='AddStaff'" class="btn btn-block btn-info">Add Staff</button>
                         </div>
+                        <br /><br /><br />
                         <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
                             <thead>
                                 <tr>
                                     <th class="footable-sortable text-center">S.No<span class="footable-sort-indicator"></span></th>
-                                    <th class="footable-sortable text-center">User Name<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable text-center">Name<span class="footable-sort-indicator"></span></th>
                                     <th class="footable-sortable text-center">Cell Phone<span class="footable-sort-indicator"></span></th>
                                     <th class="footable-sortable text-center">Date Of Birth<span class="footable-sort-indicator"></span></th>
                                     <th class="footable-sortable text-center">Action<span class="footable-sort-indicator"></span></th>
@@ -44,15 +45,14 @@
                                         sno = sno + 1;
                                         <tr role="row" class="line-content">
                                             <td class="text-center">@sno</td>
-                                            <td class="text-center">
-                                                <a href="~/Admin/StaffDetails/@item.UserId" class="fcbtn btn btn-info btn-outline btn-1f">@item.LastName, @item.FirstName</a>
-                                            </td>
+                                            <td class="text-center">@item.LastName, @item.FirstName</td>
                                             <td class="text-center">@item.CellPhone</td>
                                             <td class="text-center">@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
                                             <td class="text-center">
+                                                <span class="delete"><a href="~/Admin/StaffDetails/@item.UserId" class="fcbtn btn btn-info btn-outline btn-1f">View</a></span>
                                                 <span class="delete"><a href="~/Admin/AddStaff/@item.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Edit</a></span>
-                                                <span class="delete"><a href="~/Admin/DeleteStaff/@item.UserId" onclick="return confirm('Are you sure you wish to Delete Staff ?');" class="fcbtn btn btn-danger btn-outline btn-1f">Delete</a></span>
                                                 <span class="delete"><a href="~/Admin/ShiftSchedule/?userid=@item.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Add/Update Schedule</a></span>
+                                                <span class="delete"><a href="~/Admin/DeleteStaff/@item.UserId" onclick="return confirm('Are you sure you wish to Delete Staff ?');" class="fcbtn btn btn-danger btn-outline btn-1f">Delete</a></span>
                                             </td>
                                         </tr>
                                     }

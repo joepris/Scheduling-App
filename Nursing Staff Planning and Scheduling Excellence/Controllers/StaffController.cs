@@ -23,22 +23,17 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         {
             return View();
         }
-
         [HttpGet]
-        public async Task<ActionResult> profile(int? UserID)
+        public ActionResult StaffDetails(int id)
         {
-
-            int UserIDs = LoginRepository.GetUserID(User.Identity.Name);
-            if(UserIDs==0)
-            {
-                UserIDs = UserID??0;
-            }
+            int UserID = id;
+            UserID = LoginRepository.GetUserID(User.Identity.Name);
             UserVM obj = new UserVM();
             try
             {
-                if (UserID != 0 || UserIDs !=0)
+                if (id != null)
                 {
-                     var task = db.User.Where(x => x.UserId == UserIDs).FirstOrDefault();
+                    var task = db.User.Where(x => x.UserId == id).FirstOrDefault();
                     obj.UserId = task.UserId;
                     obj.FirstName = task.FirstName;
                     obj.LastName = task.LastName;
@@ -58,18 +53,73 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     obj.UserRole = task.UserRole;
                     obj.Note = task.Note;
                     obj.Fax = task.Fax;
+
                     obj.GenderName = task.Gender?.GenderName;
                     obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
-              
                 }
+                obj.gendersList = db.Gender.ToList();
+                obj.maritalsList = db.MaritalStatus.ToList();
+                obj.rolesList = db.Role.ToList();
+
             }
             catch (Exception ex)
             {
+                return View("Error");
+            }
+            return View(obj);
+        }
 
+        [HttpGet]
+        public async Task<ActionResult> profile(int? UserID)
+        {
+
+            int UserIDs = LoginRepository.GetUserID(User.Identity.Name);
+            if(UserIDs==0)
+            {
+                UserIDs = UserID??0;
+            }
+            UserVM obj = new UserVM();
+            try
+            {
+                if (UserIDs != null)
+                {
+                    var task = db.User.Where(x => x.UserId == UserIDs).FirstOrDefault();
+                    obj.UserId = task.UserId;
+                    obj.FirstName = task.FirstName;
+                    obj.LastName = task.LastName;
+                    obj.DOB = task.DOB;
+                    obj.ZipCode = task.ZipCode;
+                    obj.City = task.City;
+                    obj.Province = task.Province;
+                    obj.CellPhone = task.CellPhone;
+                    obj.Email = task.Email;
+                    obj.Address = task.Address;
+                    obj.Sex = task.Sex;
+                    obj.MaritalStatusId = task.MaritalStatusId;
+                    obj.UserName = task.UserName;
+                    obj.Password = task.Password;
+                    obj.Image = task.Image;
+                    obj.Specialization = task.Specialization;
+                    obj.UserRole = task.UserRole;
+                    obj.Note = task.Note;
+                    obj.Fax = task.Fax;
+
+                    obj.GenderName = task.Gender?.GenderName;
+                    obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
+                }
+                obj.gendersList = db.Gender.ToList();
+                obj.maritalsList = db.MaritalStatus.ToList();
+                obj.rolesList = db.Role.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
             }
             return View(obj);
 
         }
+
         [HttpGet]
         public async Task<ActionResult> SaveStaff(int? id)
         {
