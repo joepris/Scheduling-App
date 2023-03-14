@@ -234,10 +234,10 @@ INSERT [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime
 INSERT [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (22, 9, CAST(N'2023-03-04T19:27:00.000' AS DateTime), CAST(N'2023-03-04T19:27:00.000' AS DateTime), CAST(N'19:27:00' AS Time), CAST(N'19:27:00' AS Time), 3)
 SET IDENTITY_INSERT [dbo].[ShiftSchedule] OFF
 GO
-SET IDENTITY_INSERT [dbo].[User] ON 
-
-INSERT [dbo].[User] ([UserId], [FirstName], [LastName], [UserName], [Password], [MaritalStatusId], [DOB], [Sex], [Address], [City], [Province], [ZipCode], [Email], [HomePhone], [CellPhone], [UserRole], [AccessLevel], [Specialization], [FullName], [Image], [Note], [Fax]) VALUES (8, N'admin', N'admin', N'Admin', N'123', 1, NULL, 1, N'test', N'test', N'test', N'12331', N'admin@gmail.com', N'9898989898', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL)
-INSERT [dbo].[User] ([UserId], [FirstName], [LastName], [UserName], [Password], [MaritalStatusId], [DOB], [Sex], [Address], [City], [Province], [ZipCode], [Email], [HomePhone], [CellPhone], [UserRole], [AccessLevel], [Specialization], [FullName], [Image], [Note], [Fax]) VALUES (11, N'test t', N'test', N'test', N'test', 1, CAST(N'2023-03-04T00:00:00.000' AS DateTime), 1, N'test', N'test', N'test', N'1223', N'test', NULL, N'345345435', 2, NULL, NULL, NULL, NULL, NULL, NULL)
+SET IDENTITY_INSERT [dbo].[User] ON
+INSERT INTO [dbo].[User] ([UserId], [FirstName], [LastName], [UserName], [Password], [MaritalStatusId], [DOB], [Sex], [Address], [City], [Province], [ZipCode], [Email], [HomePhone], [CellPhone], [UserRole], [AccessLevel], [Specialization], [FullName], [Image], [Note], [Fax]) VALUES (8, N'admin', N'admin', N'Admin', N'123', 1, NULL, 1, N'test', N'test', N'test', N'12331', N'admin@gmail.com', N'9898989898', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[User] ([UserId], [FirstName], [LastName], [UserName], [Password], [MaritalStatusId], [DOB], [Sex], [Address], [City], [Province], [ZipCode], [Email], [HomePhone], [CellPhone], [UserRole], [AccessLevel], [Specialization], [FullName], [Image], [Note], [Fax]) VALUES (2008, N'test 2', N'test', N'test2', N'123', 2, N'2000-02-13 00:00:00', 1, N'test', N'Calgary', N'Alberta', N'123123', N'test@test.com', NULL, N'58733331234', 2, NULL, NULL, NULL, NULL, NULL, NULL)
+INSERT INTO [dbo].[User] ([UserId], [FirstName], [LastName], [UserName], [Password], [MaritalStatusId], [DOB], [Sex], [Address], [City], [Province], [ZipCode], [Email], [HomePhone], [CellPhone], [UserRole], [AccessLevel], [Specialization], [FullName], [Image], [Note], [Fax]) VALUES (2009, N'test3', N'test', N'test3', N'123', 2, N'2002-02-01 00:00:00', 1, N'123', N'test', N'test', N'123123', N'test@attest.com', NULL, N'12345671234', 2, NULL, NULL, NULL, NULL, NULL, NULL)
 SET IDENTITY_INSERT [dbo].[User] OFF
 GO
 -- --------------------------------------------------
