@@ -10,13 +10,16 @@
         background-color: #2f323e !important;
         border-color: #2f323e !important;
     }
+
     .user-profile .user-pro-body {
         display: block;
         margin-top: 41px !important;
     }
+
     button.btn.btn-primary.btn-block {
         margin-top: 25px;
     }
+
     .col-md-12.offset-md-1 {
         margin-left: 0;
     }
@@ -51,35 +54,35 @@
                             <div class="row">
                                 <div class="col-md-12 offset-md-1">
                                     <form id="form_create_appointment">
-                                            <div class="col-md-3 form-group">
-                                                <label class="required">Start Date</label>
-                                                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Start Date" } })
-                                            
-                                            </div>
+                                        <div class="col-md-3 form-group">
+                                            <label class="required">Start Date</label>
+                                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Start Date" } })
+
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label class="required">End Date</label>
+                                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = "End Date" } })
+                                        </div>
+
+
+                                        <div class="col-md-3 form-group">
+                                            <label class="required">Select Shift </label>
+                                            @Html.DropDownListFor(model => model.ShiftId, new List<SelectListItem>
+                                                               {
+                                                               new SelectListItem{ Text="Day", Value = "1" },
+                                                               new SelectListItem{ Text="Evening", Value = "2" },
+                                                               new SelectListItem{ Text="Night", Value = "3" },
+                                                               }, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.ShiftId, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-row">
 
                                             <div class="col-md-3 form-group">
-                                                <label class="required">End Date</label>
-                                                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = "End Date" } })
+                                                <button type="submit" class="btn btn-primary btn-block">Save</button>
                                             </div>
-
-
-                                            <div class="col-md-3 form-group">
-                                                <label class="required">Select Shift </label>
-                                                @Html.DropDownListFor(model => model.ShiftId, new List<SelectListItem>
-                                                                   {
-                                                                   new SelectListItem{ Text="Day", Value = "1" },
-                                                                   new SelectListItem{ Text="Evening", Value = "2" },
-                                                                   new SelectListItem{ Text="Night", Value = "3" },
-                                                                   }, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ShiftId, "", new { @class = "text-danger" })
-                                            </div>
-
-                                            <div class="form-row">
-
-                                                <div class="col-md-3 form-group">
-                                                    <button type="submit" class="btn btn-primary btn-block">Save</button>
-                                                </div>
-                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="col offset-md-1">
@@ -146,37 +149,10 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-
 
 
 <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
@@ -187,7 +163,7 @@
 
 <script>
     $('#StartDate').datetimepicker({
-       // format: 'DD-MM-YYYY LT'
+        // format: 'DD-MM-YYYY LT'
     });
     $('#EndDate').datetimepicker({
         //format: 'DD-MM-YYYY LT'

@@ -1,5 +1,4 @@
 ﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserVM
-
 @{
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -85,94 +84,196 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
 
-@*<div id="page-wrapper">
-    <div class="container-fluid">
-         .row 
-        <div class="row m-t-20">
-            @if (TempData["Message"] != null)
-            {
-                <div class="alert alert-success" style="float: right;" role="alert">
-                    <b>@TempData["Message"]</b>
-                </div>
-            }
-            @if (TempData["DeleteMessage"] != null)
-            {
-                <div class="alert alert-danger" style="float: right;" role="alert">
-                    <b>@TempData["DeleteMessage"]</b>
-                </div>
-            }
             <div class="panel panel-info">
-                <div class="panel-heading ">My Profile </div>
+                <div class="panel-heading "> My Calendar</div>
                 <div class="white-box">
-                    <div class="scrollable">
-                        <div class="table-responsive">
-                            <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
-                                <thead>
-                                    <tr>
-                                        <th class="footable-sortable">FirstName<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">LastName<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Martial Status<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">DOB <span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Gender<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Address<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">City<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Province<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Zip Code<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Email<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Phone<span class="footable-sort-indicator"></span></th>
-                                        <th class="footable-sortable">Action<span class="footable-sort-indicator"></span></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model != null)
+                    @{
+                        var now = DateTime.Now;
+                        var daysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
+                        var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
+                        var lastDayOfMonth = new DateTime(now.Year, now.Month, daysInMonth);
+                        var previousMonth = firstDayOfMonth.AddMonths(-1);
+                        var nextMonth = firstDayOfMonth.AddMonths(1);
+                        var daysOfWeek = new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+                    }
+
+                    <div class="month-control">
+                        <h2 class="month-h2">@now.ToString("MMMM yyyy")</h2>
+                        <a href="@Url.Action("Index", new { year = previousMonth.Year, month = previousMonth.Month })">&lt; Previous Month</a>
+                        <a href="@Url.Action("Index", new { year = nextMonth.Year, month = nextMonth.Month })">Next Month &gt;</a>
+                    </div>
+
+                    <table class="table-schedule">
+                        <thead>
+                            <tr>
+                                @foreach (var dayOfWeek in daysOfWeek)
+                                {
+                                    <th>@dayOfWeek</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int day = 1; day <= daysInMonth; day++)
+                            {
+                                var date = new DateTime(now.Year, now.Month, day);
+                                if (date.DayOfWeek == DayOfWeek.Sunday)
+                                {
+                                    @:<tr>
+                                    }
+                                    if (day == 1)
                                     {
-                                        <tr role="row" class="line-content">
-                                            <td class="text-center">@Model.FirstName</td>
-                                            <td class="text-center">@Model.LastName</td>
-                                            <td class="text-center">@Model.MaritalStatus</td>
-                                            <td class="text-center">@(Model.DOB != null ? string.Format("{0:MMMM d , yyyy}", Model.DOB) : "")</td>
-                                            <td class="text-center">@Model.GenderName</td>
-                                            <td class="text-center">@Model.Address</td>
-                                            <td class="text-center">@Model.City</td>
-                                            <td class="text-center">@Model.Province</td>
-                                            <td class="text-center">@Model.ZipCode</td>
-                                            <td class="text-center">@Model.Email</td>
-                                            <td class="text-center">@Model.CellPhone</td>
-                                            <td class="text-center">
-                                                <span class="delete"><a href="~/Staff/Savestaff/@Model.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Request Update</a></span>
-                                            </td>
-                                        </tr>
+
+                                        for (int gap = 0; gap < 6 - (int)date.DayOfWeek; gap++)
+                                        {
+                                            @:<td class="borderless"></td>
+                                        }
+                                    }
+                                    <td>
+                                        @if (date >= firstDayOfMonth && date <= lastDayOfMonth)
+                                        {
+                                            <span><a href="#">@day</a></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="other-month">@day</span>
+                                        }
+                                    </td>
+                                    if (date.DayOfWeek == DayOfWeek.Saturday)
+                                    {
+                                    @:</tr>
+                                }
+
+                                if (lastDayOfMonth.DayOfWeek == DayOfWeek.Saturday)
+                                {
+                                    @:</tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">Schedule</div>
+                <div class="white-box overflow-x-scroll">
+                    @{
+                        var schedule = now;
+                    }
+                    <div class="month-control">
+                        <h2 class="month-h2">@now.ToString("yyyy, MMMM d")</h2>
+                    </div>
+                    <table class="day-schedule">
+                        <tbody>
+                            <tr>
+                                <th>Time</th>
+                                @for (int hour = 0; hour <= 23; hour++)
+                                {
+                                    for (int minute = 0; minute <= 45; minute += 30)
+                                    {
+                                        var time = new DateTime(now.Year, now.Month, now.Day, hour, minute, 0);
+                                        <td>@time.ToString("h:mm tt")</td>
+                                    }
+                                }
+                            </tr>
+                            <tr style="height: 4rem">
+                                <th></th>
+                                @for (int hour = 0; hour <= 23; hour++)
+                                {
+                                    for (int minute = 0; minute <= 45; minute += 30)
+                                    {
+                                        var time = new DateTime(now.Year, now.Month, now.Day, hour, minute, 0);
+
+                                        // Check if date is booked, unavailable, vacant or conflicting
+                                        // if time is in between of a booked day's start and end date
+                                        if (3 < hour && hour < 15)
+                                        {
+                                            @:<td class="work-time"></td>
+                                        }
+                                        else
+                                        {
+                                            @:<td class="unavailable-time"></td>
+                                        }
 
                                     }
-                                </tbody>
-                                
-
-                            </table>
-
-                        </div>
-                    </div>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</div>*@
-@*@section Scripts {
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.material.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#example').DataTable({ "pageLength": 10 });
-        });
-        $(document).ready(function () {
-            $('#example1').DataTable({ "pageLength": 10 });
-        });
-    </script>
-}*@
+</div>
 
+<style>
+    table {
+        border-collapse: collapse;
+    }
 
+    th, td {
+        border: 1px solid #ccc;
+        padding: 5px;
+        text-align: center;
+    }
 
+        td dd {
+            text-align: left;
+        }
+
+    .other-month {
+        color: #ccc;
+    }
+
+    .overflow-x-scroll {
+        overflow-x: scroll;
+    }
+
+    .table-schedule {
+        width: 80%;
+        margin: 3.5rem auto;
+    }
+
+        .table-schedule td, .table-schedule th {
+            border: none;
+        }
+
+    .day-schedule {
+        width: 50%;
+        margin: 3.5rem auto;
+    }
+
+        .day-schedule td, .day-schedule th {
+            border: none;
+        }
+
+            .day-schedule td.available-time {
+                background: #eee;
+            }
+
+            .day-schedule td.work-time {
+                background: #4cff00;
+            }
+
+            .day-schedule td.unavailable-time {
+                background: #808080;
+            }
+
+        .day-schedule
+
+        .borderless {
+            border: none;
+        }
+
+    .month-control {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0 1rem;
+    }
+
+    .month-h2 {
+        width: 100%;
+        text-align: center;
+    }
+</style>
