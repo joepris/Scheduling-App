@@ -43,7 +43,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         LastName = s.LastName,
                         Address = s.Address,
                         Sex = s.Sex,
-                        DOB = s.DOB,
+                        DOB = (DateTime)s.DOB,
                         ZipCode = s.ZipCode,
                         City = s.City,
                         Province = s.Province,
@@ -84,7 +84,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     obj.UserId = task.UserId;
                     obj.FirstName = task.FirstName;
                     obj.LastName = task.LastName;
-                    obj.DOB = task.DOB;
+                    obj.DOB = (DateTime)task.DOB;
                     obj.ZipCode = task.ZipCode;
                     obj.City = task.City;
                     obj.Province = task.Province;
@@ -214,7 +214,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     obj.UserId = task.UserId;
                     obj.FirstName = task.FirstName;
                     obj.LastName = task.LastName;
-                    obj.DOB = task.DOB;
+                    obj.DOB = (DateTime)task.DOB;
                     obj.ZipCode = task.ZipCode;
                     obj.City = task.City;
                     obj.Province = task.Province;
