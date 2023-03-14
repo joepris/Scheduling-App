@@ -31,7 +31,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         LastName = s.LastName,
                         Address = s.Address,
                         Sex = s.Sex,
-                        DOB = s.DOB,
+                        DOB = (DateTime)s.DOB,
                         ZipCode = s.ZipCode,
                         City = s.City,
                         Province = s.Province,
