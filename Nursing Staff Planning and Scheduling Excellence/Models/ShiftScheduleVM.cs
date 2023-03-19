@@ -18,6 +18,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public TimeSpan? EndTime { get; set; }
         [Required(ErrorMessage = " Shift is required")]
         public Nullable<int> ShiftId { get; set; }
+        public string Assignname { get; set; }
+        public int? Hours { get; set; }
 
         public List<ShiftSchedule> ShiftScheduleList { get; set; }
     }

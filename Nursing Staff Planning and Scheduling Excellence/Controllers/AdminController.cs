@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -251,7 +252,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 
         #region Shift Schedule
         [HttpGet]
-        public ActionResult ShiftSchedule(int? UserId, int? id)
+        public ActionResult ShiftSchedule(int? UserId, int? id, int? hours, DateTime? StartDate)
         {
             int UserID = LoginRepository.GetUserID(User.Identity.Name);
             ShiftScheduleVM obj = new ShiftScheduleVM();
@@ -265,13 +266,21 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         obj.Id = task.Id;
                         obj.UserId = task.UserId;
                         obj.StartDate = task.StartDate;
-                        obj.EndDate = task.EndDate;
+                        obj.EndDate = task.EndDate.Value.AddHours(hours ?? 0);
                         obj.StartTime = task.StartDate.Value.TimeOfDay;
                         obj.EndTime = task.EndDate.Value.TimeOfDay;
                         obj.ShiftId = task.ShiftId;
                     }
                 }
-                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserId).ToList();
+                if (hours != null)
+                {
+                    obj.EndDate = StartDate.Value.AddHours(hours ?? 0);
+                    obj.StartDate = StartDate;
+                    obj.Hours = hours;
+                }
+                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserId && x.EndDate >= DateTime.Now).ToList();
+                var assignname = db.User.Where(x => x.UserId == UserId).FirstOrDefault();
+                obj.Assignname = assignname.UserName;
             }
             catch (Exception ex)
             {
@@ -287,35 +296,55 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         public ActionResult ShiftSchedules(ShiftScheduleVM objShift)
         {
             ShiftSchedule Shift = new ShiftSchedule();
-            if (objShift.Id == 0)
+            if (objShift.Hours > 12)
             {
-                Shift.UserId = objShift.UserId;
-                Shift.StartDate = objShift.StartDate;
-                Shift.EndDate = objShift.EndDate;
-                Shift.StartTime = objShift.StartDate.Value.TimeOfDay;
-                Shift.EndTime = objShift.EndDate.Value.TimeOfDay;
-                Shift.ShiftId = objShift.ShiftId;
-                db.ShiftSchedule.Add(Shift);
+                TempData["DeleteMessage"] = string.Format("Shift hours can not exceed 12 hours");
+                return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
             }
-            else if (objShift.Id > 0)
+            if (objShift.Hours < 1)
             {
-                Shift = db.ShiftSchedule.Where(m => m.Id == objShift.Id).FirstOrDefault();
-                if (objShift != null)
+                TempData["DeleteMessage"] = string.Format("Shift hours can not be 0");
+                return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
+            }
+            var sh = db.ShiftSchedule.Where(x => (EntityFunctions.TruncateTime(x.StartDate) == EntityFunctions.TruncateTime(objShift.StartDate) || EntityFunctions.TruncateTime(x.EndDate) == EntityFunctions.TruncateTime(objShift.EndDate)) && x.UserId == objShift.UserId && x.Id != objShift.Id).FirstOrDefault();
+            if (sh != null)
+            {
+                TempData["DeleteMessage"] = string.Format("Already schedule the user for this date please choose new date ");
+                return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
+            }
+            else
+            {
+
+                if (objShift.Id == 0)
                 {
-                    Shift.Id = objShift.Id;
                     Shift.UserId = objShift.UserId;
                     Shift.StartDate = objShift.StartDate;
                     Shift.EndDate = objShift.EndDate;
                     Shift.StartTime = objShift.StartDate.Value.TimeOfDay;
                     Shift.EndTime = objShift.EndDate.Value.TimeOfDay;
                     Shift.ShiftId = objShift.ShiftId;
-                    db.Entry(Shift).State = EntityState.Modified;
+                    db.ShiftSchedule.Add(Shift);
                 }
+                else if (objShift.Id > 0)
+                {
+                    Shift = db.ShiftSchedule.Where(m => m.Id == objShift.Id).FirstOrDefault();
+                    if (objShift != null)
+                    {
+                        Shift.Id = objShift.Id;
+                        Shift.UserId = objShift.UserId;
+                        Shift.StartDate = objShift.StartDate;
+                        Shift.EndDate = objShift.EndDate;
+                        Shift.StartTime = objShift.StartDate.Value.TimeOfDay;
+                        Shift.EndTime = objShift.EndDate.Value.TimeOfDay;
+                        Shift.ShiftId = objShift.ShiftId;
+                        db.Entry(Shift).State = EntityState.Modified;
+                    }
+                }
+                db.SaveChanges();
+                TempData["message"] = string.Format("Record save successfully. ");
             }
-            db.SaveChanges();
-
-            TempData["message"] = string.Format("Record save successfully. ");
             return RedirectToAction("ShiftSchedule", new { userid = Shift.UserId });
+
         }
 
 
@@ -337,6 +366,49 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         }
 
 
+        public ActionResult ScheduleList()
+        {
+            UserVM obj = new UserVM();
+
+            try
+            {
+                var user = db.User.Where(m => m.UserRole == 2);
+                if (user != null)
+                {
+                    obj.userList = user.Select(s => new UserVM
+                    {
+                        UserId = s.UserId,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName,
+                        Address = s.Address,
+                        Sex = s.Sex,
+                        DOB = s.DOB,
+                        ZipCode = s.ZipCode,
+                        City = s.City,
+                        Province = s.Province,
+                        Email = s.Email,
+                        CellPhone = s.CellPhone,
+                        UserRole = s.UserRole,
+                        MaritalStatusId = s.MaritalStatusId,
+                        UserName = s.UserName,
+                        Password = s.Password,
+                        Image = s.Image,
+                        Note = s.Note,
+                        Fax = s.Fax,
+
+                        FullName = s.FirstName + "" + s.LastName,
+                        GenderName = s.Gender.GenderName,
+                        MaritalStatus = s.MaritalStatus.MaritalStatusName,
+                    }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(obj);
+
+        }
 
         #endregion Shift Schedule
 

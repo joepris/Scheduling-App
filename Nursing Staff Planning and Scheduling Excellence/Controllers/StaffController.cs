@@ -225,6 +225,22 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 return RedirectToAction("profile", "staff", new { UserID = UserID });
             }
 
-  
+        [HttpGet]
+        public ActionResult ShiftSchedule()
+        {
+            int UserID = LoginRepository.GetUserID(User.Identity.Name);
+            ShiftScheduleVM obj = new ShiftScheduleVM();
+            try
+            {
+                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserID && x.EndDate >= DateTime.Now).ToList();
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+            return View(obj);
+        }
+
+
     }
 }
