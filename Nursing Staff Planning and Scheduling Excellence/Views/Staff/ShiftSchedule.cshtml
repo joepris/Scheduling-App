@@ -4,58 +4,84 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var sno = 0;
 }
-<div class="container-fluid pt-4 px-4">
 
-    <div class="bg-light text-center rounded p-4">
+<style>
+    .panel-info > .panel-heading {
+        color: white !important;
+        background-color: #2f323e !important;
+        border-color: #2f323e !important;
+        border-radius: 4px;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+</style>
 
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">Schedule List</h6>
-        </div>
-        <div class="table-responsive">
-            <table id="example" class="table text-start align-middle table-bordered table-hover mb-0">
-                <thead>
-                    <tr class="text-dark">
-                        <th scope="col">S.No</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                        <th scope="col">Shift</th>
-                        <th scope="col">Start time</th>
-                        <th scope="col">End time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.ShiftScheduleList != null)
-                    {
-                        foreach (var item in Model.ShiftScheduleList)
-                        {
-                            sno = sno + 1;
-                            <tr role="row" class="line-content">
-                                <td>@sno</td>
-                                <td>@(item.StartDate != null ? string.Format("{0:MMMM d , yyyy}", item.StartDate) : "")</td>
-                                <td>@(item.EndDate != null ? string.Format("{0:MMMM d , yyyy}", item.EndDate) : "")</td>
-                                @if (item.ShiftId == 1)
-                                {
-                                    <td>Day</td>
-
-                                }
-                                @if (item.ShiftId == 2)
-                                {
-                                    <td>Evening</td>
-
-                                }
-                                @if (item.ShiftId == 3)
-                                {
-                                    <td>Night</td>
-
-                                }
-                                <td>@(item.StartDate.Value.ToString("hh:mm tt"))</td>
-                                <td>@(item.EndDate.Value.ToString("hh:mm tt"))</td>
-
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row m-t-20">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success" style="float: right;" role="alert">
+                    <b>@TempData["Message"]</b>
+                </div>
+            }
+            @if (TempData["DeleteMessage"] != null)
+            {
+                <div class="alert alert-danger" style="float: right;" role="alert">
+                    <b>@TempData["DeleteMessage"]</b>
+                </div>
+            }
+            <div class="panel-info">
+                <div class="panel-heading">
+                    Schedule List
+                </div>
+                <div class="table-responsive">
+                    <table id="example" class="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                            <tr class="text-dark">
+                                <th scope="col">S.No</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Shift</th>
+                                <th scope="col">Start time</th>
+                                <th scope="col">End time</th>
                             </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (Model.ShiftScheduleList != null)
+                            {
+                                foreach (var item in Model.ShiftScheduleList)
+                                {
+                                    sno = sno + 1;
+                                    <tr role="row" class="line-content">
+                                        <td>@sno</td>
+                                        <td>@(item.StartDate != null ? string.Format("{0:MMMM d , yyyy}", item.StartDate) : "")</td>
+                                        <td>@(item.EndDate != null ? string.Format("{0:MMMM d , yyyy}", item.EndDate) : "")</td>
+                                        @if (item.ShiftId == 1)
+                                        {
+                                            <td>Day</td>
+
+                                        }
+                                        @if (item.ShiftId == 2)
+                                        {
+                                            <td>Evening</td>
+
+                                        }
+                                        @if (item.ShiftId == 3)
+                                        {
+                                            <td>Night</td>
+
+                                        }
+                                        <td>@(item.StartDate.Value.ToString("hh:mm tt"))</td>
+                                        <td>@(item.EndDate.Value.ToString("hh:mm tt"))</td>
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
