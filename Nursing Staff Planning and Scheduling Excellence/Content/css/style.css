@@ -18,6 +18,14 @@ div#example_info {
     bottom: 45px;
     z-index: 99;
 }
+.panel-info > .panel-heading {
+    color: white !important;
+    background-color: #2f323e !important;
+    border-color: #2f323e !important;
+    border-radius: 4px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
 
 
 /*** Spinner ***/

@@ -7,15 +7,9 @@
     var sno = 0;
 }
 <style>
-    .panel-info > .panel-heading {
-        color: white !important;
-        background-color: #2f323e !important;
-        border-color: #2f323e !important;
-    }
-
     .user-profile .user-pro-body {
         display: block;
-        margin-top: 41px !important;
+        margin-top: 40px !important;
     }
 
     button.btn.btn-primary.btn-block {
@@ -65,11 +59,11 @@
                                     @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Shift Start" } })
                                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-md-3 form-group">
+                                @*<div class="col-md-3 form-group">
                                     <label class="required">Start Hour</label>
                                     @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Start Time" } })
                                     @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-                                </div>
+                                </div>*@
                                 <div class="col-md-3 form-group">
                                     <label class="required">Shift Hours</label>
                                     @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "form-control", placeholder = "Add Hours" } })
@@ -82,7 +76,7 @@
                                 </div>
 
 
-                                @*<div class="col-md-3 form-group">
+                                <div class="col-md-3 form-group">
                                     <label class="required">Select Shift </label>
                                     @Html.DropDownListFor(model => model.ShiftId, new List<SelectListItem>
                                                        {
@@ -91,7 +85,7 @@
                                                        new SelectListItem{ Text="Night", Value = "3" },
                                                        }, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.ShiftId, "", new { @class = "text-danger" })
-                                </div>*@
+                                </div>
 
                                 <div class="form-row">
 
@@ -178,7 +172,7 @@
     $(document).ready(function () {
 
         $('#StartDate').datetimepicker({
-           // minDate: new Date(),
+            //minDate: new Date(),
             format: 'MM/DD/YYYY LT',
 
         });
