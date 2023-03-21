@@ -4,68 +4,74 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var sno = 0;
 }
-<div>
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success" style="float: right;" role="alert">
-            <b>@TempData["Message"]</b>
-        </div>
+<style>
+    .panel-info > .panel-heading {
+        color: white !important;
+        background-color: #2f323e !important;
+        border-color: #2f323e !important;
+        border-radius: 4px;
+        padding: 5px;
+        margin-bottom: 10px;
     }
-    @if (TempData["DeleteMessage"] != null)
-    {
-        <div class="alert alert-danger" style="float: right;" role="alert">
-            <b>@TempData["DeleteMessage"]</b>
-        </div>
-    }
-</div>
-<div class="container-fluid pt-4 px-4">
+</style>
 
-    <div class="bg-light text-center rounded p-4">
-
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">Staff List</h6>
-        </div>
-        <div class="table-responsive">
-            <table id="example" class="table text-start align-middle table-bordered table-hover mb-0">
-                <thead>
-                    <tr class="text-dark">
-                        <th scope="col">S.No</th>
-                        <th scope="col">Full Name</th>
-                        <th scope="col">Cell Phone</th>
-                        <th scope="col">Date Of Birth</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.userList != null)
-                    {
-                        foreach (var item in Model.userList)
-                        {
-                            sno = sno + 1;
-                            <tr>
-
-                                <td>@sno</td>
-                                <td>@item.LastName, @item.FirstName</td>
-                                <td>@item.CellPhone</td>
-                                <td>@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
-                                <td>
-                                    <a class="btn btn-sm btn-primary" href="~/Admin/ShiftSchedule/?userid=@item.UserId">Schedule </a>
-
-                                </td>
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row m-t-20">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success" style="float: right;" role="alert">
+                    <b>@TempData["Message"]</b>
+                </div>
+            }
+            @if (TempData["DeleteMessage"] != null)
+            {
+                <div class="alert alert-danger" style="float: right;" role="alert">
+                    <b>@TempData["DeleteMessage"]</b>
+                </div>
+            }
+            <div class="panel panel-info">
+                <div class="panel-heading "> Staff Schedule Maker </div>
+                <div class="white-box">
+                    <div class="table-responsive">
+                        @*<br /><br /><br />*@
+                    <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
+                        <thead>
+                            <tr class="text-dark">
+                                <th scope="col">S.No</th>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Cell Phone</th>
+                                <th scope="col">Date Of Birth</th>
+                                <th scope="col">Action</th>
                             </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (Model.userList != null)
+                            {
+                                foreach (var item in Model.userList)
+                                {
+                                    sno = sno + 1;
+                                    <tr>
+
+                                        <td>@sno</td>
+                                        <td>@item.LastName, @item.FirstName</td>
+                                        <td>@item.CellPhone</td>
+                                        <td>@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
+                                        <td>
+                                            <a class="fcbtn btn btn-info btn-outline btn-1f" href="~/Admin/ShiftSchedule/?userid=@item.UserId">Schedule </a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-
-
-
-
-
 
 
 @section Scripts {

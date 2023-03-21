@@ -79,6 +79,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 UserIDs = UserID??0;
             }
             UserVM obj = new UserVM();
+            ShiftScheduleVM obj2 = new ShiftScheduleVM();
             try
             {
                 if (UserIDs != null)
@@ -106,6 +107,19 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 
                     obj.GenderName = task.Gender?.GenderName;
                     obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
+
+                    var task2 = db.ShiftSchedule.Where(x => x.UserId == UserIDs).FirstOrDefault();
+                    if (task2 != null)
+                    {
+                        obj2.Id = task2.Id;
+                        obj2.UserId = task2.UserId;
+                        obj2.StartDate = task2.StartDate;
+                        obj2.EndDate = task2.EndDate;
+                        obj2.StartTime = task2.StartTime;
+                        obj2.EndTime = task2.EndTime;
+                        obj2.ShiftId = task2.ShiftId;
+                        //obj2.Hours = task2.StartDate.Hours}
+                    }
                 }
                 obj.gendersList = db.Gender.ToList();
                 obj.maritalsList = db.MaritalStatus.ToList();
@@ -116,7 +130,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             {
                 return View("Error");
             }
-            return View(obj);
+            UserWithScheduleVM obj3 = new UserWithScheduleVM() { User = obj, ShiftSchedule = obj2 };
+            return View(obj3);
 
         }
 

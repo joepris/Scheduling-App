@@ -1,10 +1,20 @@
-﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserVM
+﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserWithScheduleVM
+
 @{
-    ViewBag.Title = "Profile";
+    ViewBag.Title = "My Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var sno = 0;
-    var sno1 = 0;
 }
+
+<style>
+    .panel-info > .panel-heading {
+        color: white !important;
+        background-color: #2f323e !important;
+        border-color: #2f323e !important;
+        border-radius: 4px;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+</style>
 
 <div id="page-wrapper">
     <div class="container-fluid">
@@ -22,7 +32,7 @@
                 </div>
             }
             <div class="panel panel-info">
-                <div class="panel-heading "> @ViewBag.Title: @Model.FirstName @Model.LastName </div>
+                <div class="panel-heading "> @ViewBag.Title: @Model.User.FirstName @Model.User.LastName </div>
                 <div class="white-box">
                     <div class="table-responsive">
                         <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
@@ -33,50 +43,72 @@
                                         <dt>
                                             Name
                                         </dt>
-                                        <dd>
-                                            @Model.LastName, @Model.FirstName
-                                        </dd>
+
                                         <dt>
                                             User Name
                                         </dt>
-                                        <dd>
-                                            @Model.UserName
-                                        </dd>
+
                                         <dt>
                                             Date of Birth
                                         </dt>
-                                        <dd>
-                                            @Model.DOB
-                                        </dd>
+
                                         <dt>
                                             Gender
                                         </dt>
-                                        <dd>
-                                            @Model.GenderName
-                                        </dd>
+
                                         <dt>
                                             Address
                                         </dt>
-                                        <dd>
-                                            @Model.Address, @Model.City, @Model.Province, @Model.ZipCode
-                                        </dd>
+
                                         <dt>
                                             Email
                                         </dt>
-                                        <dd>
-                                            @Model.Email
-                                        </dd>
+
                                         <dt>
-                                            Phone
+                                            Phone <br /><br />
                                         </dt>
-                                        <dd>
-                                            Cell: @Model.CellPhone <br />
-                                            Home: @Model.HomePhone
-                                        </dd>
-                                        <dt class="text-center">
+
+                                        <dt>
                                             Action
                                         </dt>
-                                        <dd><a href="~/Staff/Savestaff/@Model.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Request Update</a></dd>
+
+                                    </dl>
+                                </td>
+                                <td>
+                                    <dl class="dl-horizontal">
+                                        <dd>
+                                            @Model.User.LastName, @Model.User.FirstName
+                                        </dd>
+                                        <dd>
+                                            @Model.User.UserName
+                                        </dd>
+                                        <dd>
+                                            @Model.User.DOB
+                                        </dd>
+                                        <dd>
+                                            @Model.User.GenderName
+                                        </dd>
+                                        <dd>
+                                            @Model.User.Address, @Model.User.City, @Model.User.Province, @Model.User.ZipCode
+                                        </dd>
+                                        <dd>
+                                            @Model.User.Email
+                                        </dd>
+                                        <dd>
+                                            Cell: @if (Model.User.CellPhone != null)
+                                            {@Model.User.CellPhone}
+                                        else
+                                        { @Html.Raw("N/A")} <br />
+                                            Home: @if (Model.User.HomePhone != null)
+                                            {@Model.User.HomePhone}
+                                        else
+                                        { @Html.Raw("N/A")}
+                                        </dd>
+                                        <dd>
+                                            <a href="~/Staff/Savestaff/@Model.User.UserId" class="fcbtn btn btn-info btn-outline btn-1f">
+                                                Request Update
+                                            </a>
+                                        </dd>
                                     </dl>
                                 </td>
                             }
@@ -206,6 +238,7 @@
     </div>
 </div>
 
+
 <style>
     table {
         border-collapse: collapse;
@@ -220,6 +253,12 @@
         td dd {
             text-align: left;
         }
+
+    dt {
+        padding-right: 10px;
+        text-align: right;
+        margin-bottom: 8.5px;
+    }
 
     .other-month {
         color: #ccc;

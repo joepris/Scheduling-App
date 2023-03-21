@@ -68,7 +68,7 @@
                         <a href="/Home/Index" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
                         <div>---------------------------------</div>
-                        <a href="/Admin/AllStaffList" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Staff</a>
+                        <a href="/Admin/AllStaffList" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Staff List Editor</a>
                         <a href="/Admin/ScheduleList" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Schedule</a>
                         <div>---------------------------------</div>
                         <a href="/Home/About" class="nav-item nav-link"><i class="fa fa-th me-2"></i>About</a>
@@ -78,11 +78,11 @@
                     @if (this.User.IsInRole("Staff"))
                     {
                         <a href="/Staff/profile" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <div>---------------------------------</div>
+                        <a href="/Staff/ShiftSchedule" class="nav-item nav-link"><i class="fa fa-th me-2"></i>My Schedule</a>
+                        <div>---------------------------------</div>
                         <a href="/Home/About" class="nav-item nav-link"><i class="fa fa-th me-2"></i>About</a>
                         <a href="/Home/Contact" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Contact</a>
-                        <div>------------------------------------------</div>
-                        <a href="/Staff/profile" class="nav-item nav-link"><i class="fa fa-th me-2"></i>My Profile</a>
-                        <a href="/Staff/ShiftSchedule" class="nav-item nav-link"><i class="fa fa-th me-2"></i>My Schedule</a>
 
                     }
 
