@@ -1,4 +1,4 @@
-﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserVM
+﻿@model NursingStaffPlanningandSchedulingExcellence.Models.UserWithScheduleVM
 
 @{
     ViewBag.Title = "Staff Detail";
@@ -21,74 +21,93 @@
                 </div>
             }
             <div class="panel panel-info">
-                <div class="panel-heading "> @ViewBag.Title </div>
+                <div class="panel-heading "> @ViewBag.Title: @Model.User.FirstName @Model.User.LastName </div>
                 <div class="white-box">
                     <div class="table-responsive">
                         <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
-                            <div class="h2">@Model.FirstName @Model.LastName </div>
-                            <td>
-                                <dl class="dl-horizontal">
-                                    <dt>
-                                        S.No
-                                    </dt>
-                                    <dd>
-                                        @Model.LastName, @Model.FirstName
-                                    </dd>
-                                    <dt>
-                                        Name
-                                    </dt>
-                                    <dd>
-                                        @Model.LastName, @Model.FirstName
-                                    </dd>
-                                    <dt>
-                                        User Name
-                                    </dt>
-                                    <dd>
-                                        @Model.UserName
-                                    </dd>
-                                    <dt>
-                                        Date of Birth
-                                    </dt>
-                                    <dd>
-                                        @Model.DOB
-                                    </dd>
-                                    <dt>
-                                        Gender
-                                    </dt>
-                                    <dd>
-                                        @Model.GenderName
-                                    </dd>
-                                    <dt>
-                                        Address
-                                    </dt>
-                                    <dd>
-                                        @Model.Address, @Model.City, @Model.Province, @Model.ZipCode
-                                    </dd>
-                                    <dt>
-                                        Email
-                                    </dt>
-                                    <dd>
-                                        @Model.Email
-                                    </dd>
-                                    <dt>
-                                        Phone
-                                    </dt>
-                                    <dd>
-                                        Cell: @Model.CellPhone <br />
-                                        Home: @Model.HomePhone
-                                    </dd>
-                                    <dt class="text-center">
-                                        Action
-                                    </dt>
-                                    <dd><a href="~/Admin/AddStaff/@Model.UserId" class="fcbtn btn btn-info btn-outline btn-1f">Edit Information</a></dd>
-                                </dl>
-                            </td>
-                        </table>
-                    </div>
+                            @if (Model != null)
+                            {
+                                <td>
+                                    <dl class="dl-horizontal">
+                                        <dt>
+                                            Name
+                                        </dt>
+
+                                        <dt>
+                                            User Name
+                                        </dt>
+                                        
+                                        <dt>
+                                            Date of Birth
+                                        </dt>
+                                        
+                                        <dt>
+                                            Gender
+                                        </dt>
+                                        
+                                        <dt>
+                                            Address
+                                        </dt>
+                                        
+                                        <dt>
+                                            Email
+                                        </dt>
+                                        
+                                        <dt>
+                                            Phone <br /><br />
+                                        </dt>
+                                        
+                                        <dt>
+                                            Action
+                                        </dt>
+                                        
+                                    </dl>
+                                </td>
+                                <td>
+                                    <dl class="dl-horizontal">
+                                        <dd>
+                                            @Model.User.LastName, @Model.User.FirstName
+                                        </dd>
+                                        <dd>
+                                            @Model.User.UserName
+                                        </dd>
+                                        <dd>
+                                            @Model.User.DOB
+                                        </dd>
+                                        <dd>
+                                            @Model.User.GenderName
+                                        </dd>
+                                        <dd>
+                                            @Model.User.Address, @Model.User.City, @Model.User.Province, @Model.User.ZipCode
+                                        </dd>
+                                        <dd>
+                                            @Model.User.Email
+                                        </dd>
+                                        <dd>
+                                            Cell: @if (Model.User.CellPhone != null)
+                                            {@Model.User.CellPhone}
+                                        else
+                                        { @Html.Raw("N/A")} <br />
+                                            Home: @if (Model.User.HomePhone != null)
+                                            {@Model.User.HomePhone}
+                                        else
+                                        { @Html.Raw("N/A")}
+                                        </dd>
+                                        <dd>
+                                            <a href="~/Staff/Savestaff/@Model.User.UserId" class="fcbtn btn btn-info btn-               outline btn-1f">Update
+                                            </a>
+                                        </dd>
+                                    </dl>
+                                </td>
+                        }
+                            </table>
+                        </div>
                 </div>
             </div>
+
+
             <div class="panel panel-info">
-                <div class="panel-heading "> Calendar of @Model.FirstName </div>
+                <div class="panel-heading "> My Calendar</div>
                 <div class="white-box">
                     @{
                         var now = DateTime.Now;
@@ -158,7 +177,7 @@
             <div class="panel panel-info">
                 <div class="panel-heading">Schedule</div>
                 <div class="white-box overflow-x-scroll">
-                    @{ 
+                    @{
                         var schedule = now;
                     }
                     <div class="month-control">
@@ -173,7 +192,7 @@
                                     for (int minute = 0; minute <= 45; minute += 30)
                                     {
                                         var time = new DateTime(now.Year, now.Month, now.Day, hour, minute, 0);
-                                    <td>@time.ToString("h:mm tt")</td>
+                                        <td>@time.ToString("h:mm tt")</td>
                                     }
                                 }
                             </tr>
@@ -199,13 +218,14 @@
                                     }
                                 }
                             </tr>
-                            </tbody>
-                        </table>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <style>
     table {
@@ -218,9 +238,16 @@
         text-align: center;
     }
 
-        td dd {
+        td dd{
             text-align: left;
+            
         }
+
+    dt {
+        padding-right:10px;
+        text-align: right;
+        margin-bottom: 8.5px;
+    }
 
     .other-month {
         color: #ccc;
@@ -244,27 +271,27 @@
         margin: 3.5rem auto;
     }
 
-    .day-schedule td, .day-schedule th {
-        border: none;
-    }
+        .day-schedule td, .day-schedule th {
+            border: none;
+        }
 
-    .day-schedule td.available-time {
-        background: #eee;
-    }
+            .day-schedule td.available-time {
+                background: #eee;
+            }
 
-    .day-schedule td.work-time {
-        background: #4cff00;
-    }
+            .day-schedule td.work-time {
+                background: #4cff00;
+            }
 
-    .day-schedule td.unavailable-time {
-        background: #808080;
-    }
+            .day-schedule td.unavailable-time {
+                background: #808080;
+            }
 
-    .day-schedule 
+        .day-schedule
 
-    .borderless {
-        border: none;
-    }
+        .borderless {
+            border: none;
+        }
 
     .month-control {
         display: flex;

@@ -282,6 +282,7 @@
       <DependentUpon>Nurse.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserVM.cs" />
+    <Compile Include="Models\UserWithScheduleVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\LoginRepository.cs" />
@@ -2281,6 +2282,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\NurseSched.sql" />
     <Content Include="Models\Nurse.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Nurse.edmx</DependentUpon>
@@ -3128,6 +3130,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <None Include="Views\Admin\.editorconfig" />
     <None Include="Views\Admin\ScheduleList.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

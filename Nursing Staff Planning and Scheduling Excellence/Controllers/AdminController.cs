@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DayPilot.Utils;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NursingStaffPlanningandSchedulingExcellence.Models;
 using NursingStaffPlanningandSchedulingExcellence.Repository;
@@ -63,6 +64,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         MaritalStatus = s.MaritalStatus.MaritalStatusName,
                     }).ToList();
                 }
+               
             }
             catch (Exception ex)
             {
@@ -207,11 +209,13 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             int UserID = id;
             UserID = LoginRepository.GetUserID(User.Identity.Name);
             UserVM obj = new UserVM();
+            ShiftScheduleVM obj2 = new ShiftScheduleVM();
             try
             {
                 if (id != null)
                 {
                     var task = db.User.Where(x => x.UserId == id).FirstOrDefault();
+
                     obj.UserId = task.UserId;
                     obj.FirstName = task.FirstName;
                     obj.LastName = task.LastName;
@@ -234,17 +238,33 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 
                     obj.GenderName = task.Gender?.GenderName;
                     obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
-                }
-                obj.gendersList = db.Gender.ToList();
-                obj.maritalsList = db.MaritalStatus.ToList();
-                obj.rolesList = db.Role.ToList();
 
+                    var task2 = db.ShiftSchedule.Where(x => x.UserId == id).FirstOrDefault();
+                    if (task2 != null)
+                    {
+                        obj2.Id = task2.Id;
+                        obj2.UserId = task2.UserId;
+                        obj2.StartDate = task2.StartDate;
+                        obj2.EndDate = task2.EndDate;
+                        obj2.StartTime = task2.StartTime;
+                        obj2.EndTime = task2.EndTime;
+                        obj2.ShiftId = task2.ShiftId;
+                        //obj2.Hours = task2.StartDate.Hours}
+                    }
+                    obj.gendersList = db.Gender.ToList();
+                    obj.maritalsList = db.MaritalStatus.ToList();
+                    obj.rolesList = db.Role.ToList();
+                }
             }
+
+            
             catch (Exception ex)
             {
                 return View("Error");
             }
-            return View(obj);
+
+            UserWithScheduleVM obj3 = new UserWithScheduleVM() { User = obj, ShiftSchedule = obj2};
+            return View(obj3);
         }
 
 
@@ -267,14 +287,16 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         obj.UserId = task.UserId;
                         obj.StartDate = task.StartDate;
                         obj.EndDate = task.EndDate.Value.AddHours(hours ?? 0);
-                        obj.StartTime = task.StartDate.Value.TimeOfDay;
-                        obj.EndTime = task.EndDate.Value.TimeOfDay;
+                        //obj.EndDate = task.EndDate;
+                        obj.StartTime = task.StartTime;
+                        obj.EndTime = task.EndTime;
                         obj.ShiftId = task.ShiftId;
                     }
                 }
                 if (hours != null)
                 {
                     obj.EndDate = StartDate.Value.AddHours(hours ?? 0);
+                    //obj.EndDate = EndDate;
                     obj.StartDate = StartDate;
                     obj.Hours = hours;
                 }
@@ -320,8 +342,9 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     Shift.UserId = objShift.UserId;
                     Shift.StartDate = objShift.StartDate;
                     Shift.EndDate = objShift.EndDate;
-                    Shift.StartTime = objShift.StartDate.Value.TimeOfDay;
-                    Shift.EndTime = objShift.EndDate.Value.TimeOfDay;
+                    Shift.StartTime = objShift.StartTime;
+                    TimeSpan? addHours = objShift.Hours.HasValue ? TimeSpan.FromHours(objShift.Hours.Value) : (TimeSpan?)null;
+                    Shift.EndTime = (objShift.StartTime + addHours);
                     Shift.ShiftId = objShift.ShiftId;
                     db.ShiftSchedule.Add(Shift);
                 }
