@@ -287,9 +287,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         obj.UserId = task.UserId;
                         obj.StartDate = task.StartDate;
                         obj.EndDate = task.EndDate.Value.AddHours(hours ?? 0);
-                        //obj.EndDate = task.EndDate;
-                        obj.StartTime = task.StartTime;
-                        obj.EndTime = task.EndTime;
+                        obj.StartTime = task.StartDate.Value.TimeOfDay;
+                        obj.EndTime = task.EndDate.Value.TimeOfDay;
                         obj.ShiftId = task.ShiftId;
                     }
                 }
@@ -342,9 +341,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     Shift.UserId = objShift.UserId;
                     Shift.StartDate = objShift.StartDate;
                     Shift.EndDate = objShift.EndDate;
-                    Shift.StartTime = objShift.StartTime;
-                    TimeSpan? addHours = objShift.Hours.HasValue ? TimeSpan.FromHours(objShift.Hours.Value) : (TimeSpan?)null;
-                    Shift.EndTime = (objShift.StartTime + addHours);
+                    Shift.StartTime = objShift.StartDate.Value.TimeOfDay;
+                    Shift.EndTime = objShift.EndDate.Value.TimeOfDay;
                     Shift.ShiftId = objShift.ShiftId;
                     db.ShiftSchedule.Add(Shift);
                 }

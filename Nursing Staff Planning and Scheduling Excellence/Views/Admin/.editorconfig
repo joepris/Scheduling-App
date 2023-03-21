@@ -214,3 +214,60 @@
 <!--</div>
     </div>
 </div>-->
+
+
+[HttpPost]
+        public ActionResult ShiftSchedules(ShiftScheduleVM objShift)
+        {
+            ShiftSchedule Shift = new ShiftSchedule();
+            if (objShift.Hours > 12)
+            {
+                TempData["DeleteMessage"] = string.Format("Shift hours can not exceed 12 hours");
+                return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
+            }
+            if (objShift.Hours < 1)
+            {
+                TempData["DeleteMessage"] = string.Format("Shift hours can not be 0");
+                return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
+            }
+            var sh = db.ShiftSchedule.Where(x => (EntityFunctions.TruncateTime(x.StartDate) == EntityFunctions.TruncateTime(objShift.StartDate) || EntityFunctions.TruncateTime(x.EndDate) == EntityFunctions.TruncateTime(objShift.EndDate)) && x.UserId == objShift.UserId && x.Id != objShift.Id).FirstOrDefault();
+            if (sh != null)
+            {
+                TempData["DeleteMessage"] = string.Format("Already schedule the user for this date please choose new date ");
+                return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
+            }
+            else
+            {
+
+                if (objShift.Id == 0)
+                {
+                    Shift.UserId = objShift.UserId;
+                    Shift.StartDate = objShift.StartDate;
+                    Shift.EndDate = objShift.EndDate;
+                    Shift.StartTime = objShift.StartTime;
+                    TimeSpan? addHours = objShift.Hours.HasValue ? TimeSpan.FromHours(objShift.Hours.Value) : (TimeSpan?)null;
+                    Shift.EndTime = (objShift.StartTime + addHours);
+                    Shift.ShiftId = objShift.ShiftId;
+                    db.ShiftSchedule.Add(Shift);
+                }
+                else if (objShift.Id > 0)
+                {
+                    Shift = db.ShiftSchedule.Where(m => m.Id == objShift.Id).FirstOrDefault();
+                    if (objShift != null)
+                    {
+                        Shift.Id = objShift.Id;
+                        Shift.UserId = objShift.UserId;
+                        Shift.StartDate = objShift.StartDate;
+                        Shift.EndDate = objShift.EndDate;
+                        Shift.StartTime = objShift.StartDate.Value.TimeOfDay;
+                        Shift.EndTime = objShift.EndDate.Value.TimeOfDay;
+                        Shift.ShiftId = objShift.ShiftId;
+                        db.Entry(Shift).State = EntityState.Modified;
+                    }
+                }
+                db.SaveChanges();
+                TempData["message"] = string.Format("Record save successfully. ");
+            }
+            return RedirectToAction("ShiftSchedule", new { userid = Shift.UserId });
+
+        }
