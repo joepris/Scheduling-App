@@ -7,15 +7,15 @@
 <div>
     @if (TempData["Message"] != null)
     {
-    <div class="alert alert-success" style="float: right;" role="alert">
-        <b>@TempData["Message"]</b>
-    </div>
+        <div class="alert alert-success" style="float: right;" role="alert">
+            <b>@TempData["Message"]</b>
+        </div>
     }
     @if (TempData["DeleteMessage"] != null)
     {
-    <div class="alert alert-danger" style="float: right;" role="alert">
-        <b>@TempData["DeleteMessage"]</b>
-    </div>
+        <div class="alert alert-danger" style="float: right;" role="alert">
+            <b>@TempData["DeleteMessage"]</b>
+        </div>
     }
 </div>
 <div class="container-fluid pt-4 px-4">
@@ -39,21 +39,21 @@
                 <tbody>
                     @if (Model.userList != null)
                     {
-                    foreach (var item in Model.userList)
-                    {
-                    sno = sno + 1;
-                    <tr>
+                        foreach (var item in Model.userList)
+                        {
+                            sno = sno + 1;
+                            <tr>
 
-                        <td>@sno</td>
-                        <td>@item.LastName, @item.FirstName</td>
-                        <td>@item.CellPhone</td>
-                        <td>@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="~/Admin/ShiftSchedule/?userid=@item.UserId">Schedule </a>
+                                <td>@sno</td>
+                                <td>@item.LastName, @item.FirstName</td>
+                                <td>@item.CellPhone</td>
+                                <td>@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="~/Admin/ShiftSchedule/?userid=@item.UserId">Schedule </a>
 
-                        </td>
-                    </tr>
-                    }
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
@@ -69,14 +69,16 @@
 
 
 @section Scripts {
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
-<script>
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">*@
+    <link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.material.min.js"></script>
+    <script>
         $(document).ready(function () {
             $('#example').DataTable({ "pageLength": 10 });
         });
-</script>
+    </script>
 }
 

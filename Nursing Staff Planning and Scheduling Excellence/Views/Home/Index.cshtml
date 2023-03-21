@@ -5,8 +5,6 @@
     var sno = 0;
     var sno1 = 0;
 }
-<style>
-</style>
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row m-t-20">
@@ -64,10 +62,12 @@
     }*@
 
 @section Scripts {
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">*@
     <link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+    @*<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.material.min.js"></script>*@
     <script>
         $(document).ready(function () {
             $('#example').DataTable({ "pageLength": 10 });
