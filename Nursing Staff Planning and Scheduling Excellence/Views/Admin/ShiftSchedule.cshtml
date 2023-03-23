@@ -44,47 +44,25 @@
         }
 
         <div class="panel panel-info">
-            <div class="panel-heading ">@Model.Assignname -   Schedule Shift </div>
+            <div class="panel-heading ">@Model.Assignname - Schedule Shift </div>
             <div class="white-box">
-                @using (Html.BeginForm("ShiftSchedules", "Admin", new { id = Id }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("ShiftSchedules", "Admin", new { id = Id }, FormMethod.Post, new { id = "ShiftScheduleForm", enctype = "multipart/form-data" }))
                 {
 
                     @Html.HiddenFor(model => model.UserId)
-                    @Html.HiddenFor(model => model.Id)
                     <div class="row">
                         <div class="col-md-12 offset-md-1">
                             <form id="form_create_appointment">
                                 <div class="col-md-3 form-group">
                                     <label class="required">Shift Start</label>
-                                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Shift Start" } })
+                                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                                 </div>
-                                @*<div class="col-md-3 form-group">
-                                    <label class="required">Start Hour</label>
-                                    @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Start Time" } })
-                                    @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-                                </div>*@
-                                <div class="col-md-3 form-group">
-                                    <label class="required">Shift Hours</label>
-                                    @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "form-control", placeholder = "Add Hours" } })
-                                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-                                </div>
+
                                 <div class="col-md-3 form-group">
                                     <label class="required">Shift End</label>
-                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Shift End" } })
+                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-                                </div>
-
-
-                                <div class="col-md-3 form-group">
-                                    <label class="required">Select Shift </label>
-                                    @Html.DropDownListFor(model => model.ShiftId, new List<SelectListItem>
-                                                       {
-                                                       new SelectListItem{ Text="Day", Value = "1" },
-                                                       //new SelectListItem{ Text="Evening", Value = "2" },
-                                                       new SelectListItem{ Text="Night", Value = "3" },
-                                                       }, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.ShiftId, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-row">
@@ -107,7 +85,6 @@
                                         <th scope="col" class="text-center align-middle">Sno.</th>
                                         <th scope="col" class="text-center align-middle">Start Date</th>
                                         <th scope="col" class="text-center align-middle">End Date</th>
-                                        <th scope="col" class="text-center align-middle">Shift </th>
                                         <th scope="col" class="text-center align-middle">Start time</th>
                                         <th scope="col" class="text-center align-middle">End time</th>
                                         <th scope="col" class="text-center align-middle">Action</th>
@@ -123,21 +100,6 @@
                                                 <td class="text-center">@sno</td>
                                                 <td class="text-center">@(item.StartDate.Value.ToString("dddd, dd MMMM yyyy"))</td>
                                                 <td class="text-center">@(item.EndDate.Value.ToString("dddd, dd MMMM yyyy"))</td>
-                                                @if (item.ShiftId == 1)
-                                                {
-                                                    <td class="text-center">Day</td>
-
-                                                }
-                                                @if (item.ShiftId == 2)
-                                                {
-                                                    <td class="text-center">Evening</td>
-
-                                                }
-                                                @if (item.ShiftId == 3)
-                                                {
-                                                    <td class="text-center">Night</td>
-
-                                                }
                                                 <td class="text-center">@(item.StartDate.Value.ToString("hh:mm tt"))</td>
                                                 <td class="text-center">@(item.EndDate.Value.ToString("hh:mm tt"))</td>
                                                 <td class="text-center">
@@ -146,6 +108,17 @@
                                                 </td>
                                             </tr>
                                         }
+                                    }
+                                    else
+                                    {
+                                        <tr role="row" class="line-content">
+                                            <td class="text-center">@sno</td>
+                                            <td class="text-center">@Html.Raw("Nothing Scheduled")</td>
+                                            <td class="text-center">@Html.Raw("Nothing Scheduled")</td>
+                                            <td class="text-center">@Html.Raw("N/A")</td>
+                                            <td class="text-center">@Html.Raw("N/A")</td>
+                                            <td class="text-center">@Html.Raw("N/A")</td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -159,9 +132,7 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-
 <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
@@ -169,26 +140,34 @@
 
 <script>
 
-    $(document).ready(function () {
-
+     $(document).ready(function () {
+        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         $('#StartDate').datetimepicker({
-            //minDate: new Date(),
-            format: 'MM/DD/YYYY LT',
-
+            minDate: today,
+            format: 'D/MM/YYYY h:mm A',
         });
-         jQuery.validator.methods["date"] = function (value, element) { return true; }
-    });
-
-    $(document).ready(function () {
-       var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         $('#EndDate').datetimepicker({
             minDate: today,
-            format: 'MM/DD/YYYY LT',
+            format: 'D/MM/YYYY h:mm A',
         });
-        jQuery.validator.methods["date"] = function (value, element) { return true; }
-    });
 
-    $('#Hours').keyup(function () {
+        jQuery.validator.methods["date"] = function (value, element) { return true; }
+        $.ajax({
+            type: 'Get',
+            url: '/Admin/ShiftSchedule/',
+            data: { UserId: UserId, StartDate: StartDate, EndDate: EndDate },
+            success: function (data) {
+                window.location.href = `/Admin/ShiftSchedule?StartDate=${StartDate}&UserId=${UserId}&EndDate=${'@Model.EndDate'}&id=${'@Id'}`;
+
+            }
+        })
+     });
+
+</script>
+
+
+
+@*$('#Hours').keyup(function () {
         var StartDate = $("#StartDate").val() // Reading The id of the checkbox through value
         var hours = $("#Hours").val(); // Reading The id of the checkbox through value
         var UserId = '@UserId';
@@ -200,8 +179,39 @@
                 window.location.href = `/Admin/ShiftSchedule?hours=${hours}&StartDate=${StartDate}&UserId=${UserId}&EndDate=${'@Model.EndDate'}&id=${'@Id'}`;
             }
         });
-    });
+    });*@
 
+@*$(document).ready(function () {
 
+        $('#StartDate').datetimepicker({
+            //minDate: new Date(),
+            format: 'MM/DD/YYYY LT',
+        });
+        $('#EndDate').datetimepicker({
+            minDate: today,
+            format: 'MM/DD/YYYY LT',
+        });
+        jQuery.validator.methods["date"] = function (value, element) { return true; }
+    });*@
+
+<script>
+    function checkDates() {
+        var input = document.getElementById("StartDate").value;
+        console.log("Input: " + input);
+        console.log();
+        var input2 = document.getElementById("EndDate").value;
+        console.log("Input: " + input2);
+    }
 </script>
 
+<!--$('#ShiftScheduleForm').on('submit', (e) => {
+            console.log(e)
+            const startDate = new Date($('#StartDate').val()).toISOString()
+            const endDate = new Date($('#EndDate').val()).toISOString()-->
+@*$.ajax({
+        type: 'POST',
+        url: `/Admin/ShiftSchedule/${'@Id'}`,
+        data: { UserId: UserId, StartDate: startDate, EndDate: endDate }
+    })*@
+<!--return true;
+})-->

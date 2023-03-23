@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string currentUrl = Request.RawUrl;
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -50,14 +53,14 @@
                 <div class="d-flex align-items-center ms-4 mb-4">
 
                     <div class="ms-3">
-                        <h6 class="mb-0">@User.Identity.Name</h6>
+                        <h5 class="mb-0" style="text-transform:capitalize">@User.Identity.Name</h5>
                         @if (this.User.IsInRole("Admin"))
                         {
-                            <span>Admin</span>
+                            <span style="font-size: 11px; font-weight: lighter">Admin</span>
                         }
                         @if (this.User.IsInRole("staff"))
                         {
-                            <span>Staff</span>
+                            <span style="font-size: 11px; font-weight: lighter">Staff</span>
 
                         }
                     </div>
@@ -65,24 +68,24 @@
                 <div class="navbar-nav w-100">
                     @if (this.User.IsInRole("Admin"))
                     {
-                        <a href="/Home/Index" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="@Url.Action("Index", "Home")" class="nav-item nav-link @(currentUrl.Contains("/Home/Index") ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
-                        <div>---------------------------------</div>
-                        <a href="/Admin/AllStaffList" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Staff List Editor</a>
-                        <a href="/Admin/ScheduleList" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Schedule</a>
-                        <div>---------------------------------</div>
-                        <a href="/Home/About" class="nav-item nav-link"><i class="fa fa-th me-2"></i>About</a>
-                        <a href="/Home/Contact" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Contact</a>
+                        <hr />
+                        <a href="@Url.Action("AllStaffList", "Admin")" class="nav-item nav-link @(currentUrl.Contains("/Admin/AllStaffList") ? "active" : "")"><i class="fa fa-th me-2"></i>Staff List Editor</a>
+                        <a href="@Url.Action("ScheduleList", "Admin")" class="nav-item nav-link @(currentUrl.Contains("/Admin/ScheduleList") ? "active" : "")"><i class="fa fa-th me-2"></i>Schedule</a>
+                        <hr />
+                        <a href="@Url.Action("About", "Home")" class="nav-item nav-link @(currentUrl.Contains("/Home/About") ? "active" : "")"><i class="fa fa-th me-2"></i>About</a>
+                        <a href="@Url.Action("Contact", "Home")" class="nav-item nav-link @(currentUrl.Contains("/Home/Contact") ? "active" : "")"><i class="fa fa-th me-2"></i>Contact</a>
 
                     }
                     @if (this.User.IsInRole("Staff"))
                     {
-                        <a href="/Staff/profile" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                        <div>---------------------------------</div>
-                        <a href="/Staff/ShiftSchedule" class="nav-item nav-link"><i class="fa fa-th me-2"></i>My Schedule</a>
-                        <div>---------------------------------</div>
-                        <a href="/Home/About" class="nav-item nav-link"><i class="fa fa-th me-2"></i>About</a>
-                        <a href="/Home/Contact" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Contact</a>
+                        <a href="@Url.Action("ShiftSchedule", "Staff")" class="nav-item nav-link @(currentUrl.Contains("/Staff/ShiftSchedule") ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <hr />
+                        <a href="@Url.Action("profile", "Staff")" class="nav-item nav-link @(currentUrl.Contains("/Staff/profile") ? "active" : "")"><i class="fa fa-th me-2"></i>My Profile</a>
+                        <hr />
+                        <a href="@Url.Action("About", "Home")" class="nav-item nav-link @(currentUrl.Contains("/Home/About") ? "active" : "")"><i class="fa fa-th me-2"></i>About</a>
+                        <a href="@Url.Action("Contact", "Home")" class="nav-item nav-link @(currentUrl.Contains("/Home/Contact") ? "active" : "")"><i class="fa fa-th me-2"></i>Contact</a>
 
                     }
 
@@ -132,6 +135,7 @@
     <script src="/Content/lib/tempusdominus/js/moment.min.js"></script>
     <script src="/Content/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="/Content/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
     <script type="text/javascript" src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
     <!-- Template Javascript -->
@@ -144,13 +148,13 @@
                 $(this).remove();
             });
         }, 4000);
-            //$(document).ready(function () {
-            //    $('input[type=datetime]').datetimepicker({
-            //        format: 'MM-DD-YYYY ',
+                    //$(document).ready(function () {
+                    //    $('input[type=datetime]').datetimepicker({
+                    //        format: 'MM-DD-YYYY ',
 
-            //    });
+                    //    });
 
-            //});
+                    //});
 
     </script>
     @RenderSection("scripts", required: false)

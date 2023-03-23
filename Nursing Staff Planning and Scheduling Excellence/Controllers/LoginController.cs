@@ -94,7 +94,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     }
                     else if (loginResponse.UserRole == "Staff")
                     {
-                        return RedirectToAction("Profile", "Staff");
+                        return RedirectToAction("ShiftSchedule", "Staff");
                     }
                   
                 }

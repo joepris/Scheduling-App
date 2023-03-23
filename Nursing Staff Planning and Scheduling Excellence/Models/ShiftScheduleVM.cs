@@ -11,9 +11,12 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public int Id { get; set; }
         public int? UserId { get; set; }
         [Required(ErrorMessage = " Start Date is required")]
-        public Nullable <DateTime> StartDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MM/DD/YYYY h:mm tt}", ApplyFormatInEditMode = true)]
+        public DateTime StartDate { get; set; }
+
         [Required(ErrorMessage = " End Date is required")]
-        public Nullable <DateTime> EndDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MM/DD/YYYY h:mm tt}", ApplyFormatInEditMode = true)]
+        public DateTime EndDate { get; set; }
         public TimeSpan? StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }
         [Required(ErrorMessage = " Shift is required")]
@@ -22,5 +25,6 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public int? Hours { get; set; }
 
         public List<ShiftSchedule> ShiftScheduleList { get; set; }
+        public List<ShiftSchedule> WholeCalendarShifts { get; set; }
     }
 }
