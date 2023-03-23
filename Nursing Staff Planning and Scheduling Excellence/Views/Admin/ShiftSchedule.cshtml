@@ -109,17 +109,6 @@
                                             </tr>
                                         }
                                     }
-                                    else
-                                    {
-                                        <tr role="row" class="line-content">
-                                            <td class="text-center">@sno</td>
-                                            <td class="text-center">@Html.Raw("Nothing Scheduled")</td>
-                                            <td class="text-center">@Html.Raw("Nothing Scheduled")</td>
-                                            <td class="text-center">@Html.Raw("N/A")</td>
-                                            <td class="text-center">@Html.Raw("N/A")</td>
-                                            <td class="text-center">@Html.Raw("N/A")</td>
-                                        </tr>
-                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -134,8 +123,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
-<script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 
 
 <script>
@@ -164,54 +151,3 @@
      });
 
 </script>
-
-
-
-@*$('#Hours').keyup(function () {
-        var StartDate = $("#StartDate").val() // Reading The id of the checkbox through value
-        var hours = $("#Hours").val(); // Reading The id of the checkbox through value
-        var UserId = '@UserId';
-        $.ajax({
-            type: 'Get',
-            url: '/Admin/ShiftSchedule/',
-            data: { hours: hours, UserId: UserId, StartDate: StartDate},
-            success: function (data) {
-                window.location.href = `/Admin/ShiftSchedule?hours=${hours}&StartDate=${StartDate}&UserId=${UserId}&EndDate=${'@Model.EndDate'}&id=${'@Id'}`;
-            }
-        });
-    });*@
-
-@*$(document).ready(function () {
-
-        $('#StartDate').datetimepicker({
-            //minDate: new Date(),
-            format: 'MM/DD/YYYY LT',
-        });
-        $('#EndDate').datetimepicker({
-            minDate: today,
-            format: 'MM/DD/YYYY LT',
-        });
-        jQuery.validator.methods["date"] = function (value, element) { return true; }
-    });*@
-
-<script>
-    function checkDates() {
-        var input = document.getElementById("StartDate").value;
-        console.log("Input: " + input);
-        console.log();
-        var input2 = document.getElementById("EndDate").value;
-        console.log("Input: " + input2);
-    }
-</script>
-
-<!--$('#ShiftScheduleForm').on('submit', (e) => {
-            console.log(e)
-            const startDate = new Date($('#StartDate').val()).toISOString()
-            const endDate = new Date($('#EndDate').val()).toISOString()-->
-@*$.ajax({
-        type: 'POST',
-        url: `/Admin/ShiftSchedule/${'@Id'}`,
-        data: { UserId: UserId, StartDate: startDate, EndDate: endDate }
-    })*@
-<!--return true;
-})-->

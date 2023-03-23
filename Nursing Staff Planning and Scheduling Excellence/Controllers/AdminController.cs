@@ -294,13 +294,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         obj.ShiftId = task.ShiftId;
                     }
                 }
-                //if (hours != null)
-                //{
-                //    obj.EndDate = StartDate.Value.AddHours(hours ?? 0);
-                //    //obj.EndDate = EndDate;
-                //    obj.StartDate = (DateTime)StartDate;
-                //    obj.Hours = hours;
-                //}
+
                 obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserId && x.EndDate >= DateTime.Now).ToList();
                 var assignname = db.User.Where(x => x.UserId == UserId).FirstOrDefault();
                 obj.Assignname = assignname.UserName;
@@ -327,7 +321,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 TempData["DeleteMessage"] = string.Format("Shift End is earlier than Start Date");
                 return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
             }
-            if (objShift.EndDate.Hour - objShift.StartDate.Hour > 12)
+            TimeSpan shiftDuration = objShift.EndDate - objShift.StartDate;
+            if (shiftDuration > new TimeSpan(12,0,0))
             {
                 TempData["DeleteMessage"] = string.Format("Shift hours can not be greater than 12 hours");
                 return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
