@@ -9,6 +9,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
 {
     public class UserVM
     {
+
         public int UserId { get; set; }
         [Required(ErrorMessage = " First name is required")]
         public string FirstName { get; set; }
