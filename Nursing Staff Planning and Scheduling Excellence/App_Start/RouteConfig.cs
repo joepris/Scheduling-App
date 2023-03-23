@@ -14,6 +14,13 @@ namespace NursingStaffPlanningandSchedulingExcellence
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "StaffDetails",
+                url: "Admin/StaffDetails/{id}",
+                defaults: new { controller = "Admin", action = "StaffDetails", id = UrlParameter.Optional, year = UrlParameter.Optional, month = UrlParameter.Optional, day = UrlParameter.Optional },
+                new[] { "NursingStaffPlanningandSchedulingExcellence.Controllers" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Login", action = "Login", id = UrlParameter.Optional },

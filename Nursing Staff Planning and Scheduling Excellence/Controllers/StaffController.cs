@@ -23,52 +23,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         {
             return View();
         }
-        [HttpGet]
-        public ActionResult StaffDetails(int id)
-        {
-            int UserID = id;
-            UserID = LoginRepository.GetUserID(User.Identity.Name);
-            UserVM obj = new UserVM();
-            try
-            {
-                if (id != null)
-                {
-                    var task = db.User.Where(x => x.UserId == id).FirstOrDefault();
-                    obj.UserId = task.UserId;
-                    obj.FirstName = task.FirstName;
-                    obj.LastName = task.LastName;
-                    obj.DOB = (DateTime)task.DOB;
-                    obj.ZipCode = task.ZipCode;
-                    obj.City = task.City;
-                    obj.Province = task.Province;
-                    obj.CellPhone = task.CellPhone;
-                    obj.Email = task.Email;
-                    obj.Address = task.Address;
-                    obj.Sex = task.Sex;
-                    obj.MaritalStatusId = task.MaritalStatusId;
-                    obj.UserName = task.UserName;
-                    obj.Password = task.Password;
-                    obj.Image = task.Image;
-                    obj.Specialization = task.Specialization;
-                    obj.UserRole = task.UserRole;
-                    obj.Note = task.Note;
-                    obj.Fax = task.Fax;
-
-                    obj.GenderName = task.Gender?.GenderName;
-                    obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
-                }
-                obj.gendersList = db.Gender.ToList();
-                obj.maritalsList = db.MaritalStatus.ToList();
-                obj.rolesList = db.Role.ToList();
-
-            }
-            catch (Exception ex)
-            {
-                return View("Error");
-            }
-            return View(obj);
-        }
-
+       
         [HttpGet]
         public async Task<ActionResult> profile(int? UserID)
         {
@@ -106,10 +61,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 
                     obj.GenderName = task.Gender?.GenderName;
                     obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
+
                 }
-                obj.gendersList = db.Gender.ToList();
-                obj.maritalsList = db.MaritalStatus.ToList();
-                obj.rolesList = db.Role.ToList();
 
             }
             catch (Exception ex)
@@ -225,6 +178,29 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 return RedirectToAction("profile", "staff", new { UserID = UserID });
             }
 
-  
+        [HttpGet]
+        public ActionResult ShiftSchedule(int? year, int? month, int? day)
+        {
+            DateTime chosenMonth = (year != null && month != null) ? new DateTime(year.Value, month.Value, 1) : DateTime.Now;
+            ViewBag.chosenMonth = chosenMonth;
+
+            DateTime chosenDate = (year != null && month != null && day != null) ? new DateTime(year.Value, month.Value, day.Value) : DateTime.Now;
+            ViewBag.chosenDate = chosenDate;
+
+            int UserID = LoginRepository.GetUserID(User.Identity.Name);
+            ShiftScheduleVM obj = new ShiftScheduleVM();
+            try
+            {
+                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserID && DbFunctions.TruncateTime(x.StartDate) <= chosenDate.Date && chosenDate.Date <= DbFunctions.TruncateTime(x.EndDate)).ToList();
+                obj.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == UserID).ToList();
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+            return View(obj);
+        }
+
+
     }
 }
