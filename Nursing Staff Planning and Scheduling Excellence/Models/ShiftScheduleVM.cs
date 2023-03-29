@@ -22,7 +22,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         [Required(ErrorMessage = " Shift is required")]
         public Nullable<int> ShiftId { get; set; }
         public string Assignname { get; set; }
-        public int? Hours { get; set; }
+        [Required(ErrorMessage = " Number of hours is required")]
+        public int Hours { get; set; }
 
         public List<ShiftSchedule> ShiftScheduleList { get; set; }
         public List<ShiftSchedule> WholeCalendarShifts { get; set; }
