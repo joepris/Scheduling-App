@@ -73,6 +73,7 @@
                         <hr />
                         <a href="@Url.Action("AllStaffList", "Admin")" class="nav-item nav-link @(currentUrl.Contains("/Admin/AllStaffList") ? "active" : "")"><i class="fa fa-th me-2"></i>Staff List Editor</a>
                         <a href="@Url.Action("ScheduleList", "Admin")" class="nav-item nav-link @(currentUrl.Contains("/Admin/ScheduleList") ? "active" : "")"><i class="fa fa-th me-2"></i>Schedule</a>
+                        <a href="@Url.Action("StaffGap", "Admin")" class="nav-item nav-link @(currentUrl.Contains("/Admin/StaffGap") ? "active" : "")"><i class="fa fa-th me-2"></i>Staff Gap</a>
                         <hr />
                         <a href="@Url.Action("About", "Home")" class="nav-item nav-link @(currentUrl.Contains("/Home/About") ? "active" : "")"><i class="fa fa-th me-2"></i>About</a>
                         <a href="@Url.Action("Contact", "Home")" class="nav-item nav-link @(currentUrl.Contains("/Home/Contact") ? "active" : "")"><i class="fa fa-th me-2"></i>Contact</a>
@@ -127,7 +128,7 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/Content/lib/chart/chart.min.js"></script>
     <script src="/Content/lib/easing/easing.min.js"></script>
     <script src="/Content/lib/waypoints/waypoints.min.js"></script>
@@ -144,7 +145,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         window.setTimeout(function () {
-            $(".alert").fadeTo(5000, 0).slideUp(500, function () {
+            $(".alert").fadeTo(9000, 1).slideUp(500, function () {
                 $(this).remove();
             });
         }, 0);

@@ -21,9 +21,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         [Required(ErrorMessage = " Marital Status is required")]
         public Nullable<int> MaritalStatusId { get; set; }
         [Required(ErrorMessage = " Date of Birth is required")]
-        [DataType(DataType.Date)]
-        [CustomValidation(typeof(UserVM), "ValidateDateOfBirth")]
-        public Nullable<System.DateTime> DOB { get; set; }
+        public DateTime DOB { get; set; }
         [Required(ErrorMessage = " Gender is required")]
         public Nullable<int> Sex { get; set; }
         public string Address { get; set; }
