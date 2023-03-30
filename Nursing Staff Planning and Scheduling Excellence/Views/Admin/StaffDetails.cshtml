@@ -154,7 +154,7 @@
                                                 {
                                                     var hasShift = Model.WholeCalendarShifts.Find(x => x.StartDate.Value.Date == date || x.EndDate.Value.Date == date);
                                                     if (hasShift != null)
-                                                    {<span><a href="@Url.Action("StaffDetails", new { year = now.Year, month = now.Month, day = day })">@day</a></span>
+                                                    {<span><a href="@Url.Action("StaffDetails", new { year = now.Year, month = now.Month, day = day })">@day</a></span>}
                                                 }
                                                 else
                                                 {

@@ -60,10 +60,16 @@
                                 </div>
 
                                 <div class="col-md-3 form-group">
+                                    <label class="required">Shift Hours</label>
+                                    @Html.EditorFor(model => model.Hours, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Hours, "", new { @class = "text-danger" })
+                                </div>
+
+                                @*<div class="col-md-3 form-group">
                                     <label class="required">Shift End</label>
                                     @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-                                </div>
+                                </div>*@
 
                                 <div class="form-row">
 

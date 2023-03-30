@@ -1,4 +1,5 @@
 ﻿using DayPilot.Utils;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NursingStaffPlanningandSchedulingExcellence.Models;
@@ -80,8 +81,10 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         {
             int UserID = LoginRepository.GetUserID(User.Identity.Name);
             UserVM obj = new UserVM();
-            try
-            {
+            
+
+                try
+                {
                 if (id != null)
                 {
                     var task = db.User.Where(x => x.UserId == id).FirstOrDefault();
@@ -125,10 +128,27 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         public ActionResult AddStaff(UserVM objuser)
         {
             User user = new User();
+            if ((DateTime.Now < objuser.DOB))
+            {
+                TempData["DeleteMessage"] = string.Format("User can't be from the future");
+                return RedirectToAction("AddStaff");
+            }
+            TimeSpan age = DateTime.Now - objuser.DOB;
+            if (age < new TimeSpan(157788, 0, 0))
+            {
+                TempData["DeleteMessage"] = string.Format("User should atleast be 18 years old");
+                return RedirectToAction("AddStaff");
+            }
             var sh = db.User.Where(x => x.Email == objuser.Email && x.UserId != objuser.UserId).FirstOrDefault();
+            var sh2 = db.User.Where(x => x.UserName == objuser.UserName).FirstOrDefault();
             if (sh != null)
             {
                 TempData["DeleteMessage"] = string.Format("User already register this email.");
+                return RedirectToAction("AddStaff");
+            }
+            if (sh2 != null)
+            {
+                TempData["DeleteMessage"] = string.Format("User name already in use");
                 return RedirectToAction("AddStaff");
             }
             else
@@ -269,12 +289,35 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult StaffGap(int? year, int? month, int? day)
+        {
+            DateTime chosenMonth = (year != null && month != null) ? new DateTime(year.Value, month.Value, 1) : DateTime.Now;
+            ViewBag.chosenMonth = chosenMonth;
+
+            DateTime chosenDate = (year != null && month != null && day != null) ? new DateTime(year.Value, month.Value, day.Value) : DateTime.Now;
+            ViewBag.chosenDate = chosenDate;
+
+            var UserID = LoginRepository.GetUserID(User.Identity.Name);
+            try
+            {
+                ShiftGapVM shiftgap = new ShiftGapVM();
+                shiftgap.AllUsers = db.User.ToList();
+                shiftgap.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.Id > 0).ToList(); // get all schedules
+                return View(shiftgap);
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+        }
+
 
         #endregion Staff
 
         #region Shift Schedule
         [HttpGet]
-        public ActionResult ShiftSchedule(int? UserId, int? id, DateTime? StartDate)//int? hours
+        public ActionResult ShiftSchedule(int? UserId, int? id, DateTime? StartDate)
         {
             int UserID = LoginRepository.GetUserID(User.Identity.Name);
             ShiftScheduleVM obj = new ShiftScheduleVM();
@@ -314,15 +357,16 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             {
             Request.InputStream.Seek(0, SeekOrigin.Begin);
             string jsonData = new StreamReader(Request.InputStream).ReadToEnd();
-
+            objShift.EndDate = objShift.StartDate + new TimeSpan (objShift.Hours, 0, 0);
             ShiftSchedule Shift = new ShiftSchedule();
+            var totalWeeklyHours = db.ShiftSchedule.Where(x => x.UserId == objShift.UserId).ToList(); // get weekly hours... to be continued
             if ((objShift.EndDate < objShift.StartDate))
             {
                 TempData["DeleteMessage"] = string.Format("Shift End is earlier than Start Date");
                 return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
             }
             TimeSpan shiftDuration = objShift.EndDate - objShift.StartDate;
-            if (shiftDuration > new TimeSpan(12,0,0))
+            if (shiftDuration > new TimeSpan(12, 0, 0))
             {
                 TempData["DeleteMessage"] = string.Format("Shift hours can not be greater than 12 hours");
                 return RedirectToAction("ShiftSchedule", new { userid = objShift.UserId });
@@ -361,7 +405,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     }
                 }
                 db.SaveChanges();
-                TempData["message"] = string.Format("Record save successfully. ");
+                TempData["message"] = string.Format("Record saved successfully.");
             }
             return RedirectToAction("ShiftSchedule", new { userid = Shift.UserId });
 
@@ -402,7 +446,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         LastName = s.LastName,
                         Address = s.Address,
                         Sex = s.Sex,
-                        DOB = s.DOB,
+                        DOB = (DateTime)s.DOB,
                         ZipCode = s.ZipCode,
                         City = s.City,
                         Province = s.Province,

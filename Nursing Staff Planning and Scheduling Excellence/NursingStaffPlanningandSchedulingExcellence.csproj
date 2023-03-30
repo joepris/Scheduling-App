@@ -247,6 +247,7 @@
     <Compile Include="Models\Gender.cs">
       <DependentUpon>Nurse.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ShiftGapVM.cs" />
     <Compile Include="Models\ShiftScheduleVM.cs" />
     <Compile Include="Models\GenderVM.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -3153,6 +3154,8 @@
     <Content Include="Views\Admin\ShiftSchedule.cshtml" />
     <Content Include="Views\Admin\StaffDetails.cshtml" />
     <Content Include="Views\Staff\ShiftSchedule.cshtml" />
+    <Content Include="Views\Admin\StaffGap.cshtml" />
+    <None Include="Views\Staff\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

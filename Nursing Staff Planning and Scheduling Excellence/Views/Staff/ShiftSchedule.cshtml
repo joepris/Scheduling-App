@@ -109,7 +109,7 @@
                                 <table id="example" class="table table-hover contact-list footable-loaded footable m-t-0">
                                     <thead>
                                         <tr class="text-dark">
-                                            <th class="footable-sortable text-center" scope="col" >S.No<span class="footable-sort-indicator"></span></th>
+                                            <th class="footable-sortable text-center" scope="col">S.No<span class="footable-sort-indicator"></span></th>
                                             <th class="footable-sortable text-center" scope="col">Start Date<span class="footable-sort-indicator"></span></th>
                                             <th class="footable-sortable text-center" scope="col">End Date<span class="footable-sort-indicator"></span></th>
                                             <th class="footable-sortable text-center" scope="col">Start time<span class="footable-sort-indicator"></span></th>
@@ -190,7 +190,7 @@
                                                     {
                                                         var hasShift = Model.WholeCalendarShifts.Find(x => x.StartDate.Value.Date == date || x.EndDate.Value.Date == date);
                                                         if (hasShift != null)
-                                                        {<span><a href="@Url.Action("ShiftSchedule", new { year = now.Year, month = now.Month, day = day })">@day</a></span>
+                                                        {<span><a href="@Url.Action("ShiftSchedule", new { year = now.Year, month = now.Month, day = day })">@day</a></span>}
                                                     }
                                                     else
                                                     {
