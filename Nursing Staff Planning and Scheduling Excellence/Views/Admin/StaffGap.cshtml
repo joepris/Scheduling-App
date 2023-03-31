@@ -39,7 +39,7 @@
 
     .table-schedule {
         width: 80%;
-        margin: 3.5rem auto;
+        margin: 2.5rem auto;
     }
 
         .table-schedule td, .table-schedule th {
@@ -102,7 +102,7 @@
                     <b>@TempData["DeleteMessage"]</b>
                 </div>
             }
-        <canvas id="myChart" style="max-height:25vw; min-height:25vw"></canvas>
+        <canvas id="myChart" style="max-height:25vw; min-height:25vw; margin-bottom:10px"></canvas>
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -120,7 +120,7 @@
                                 }
 
                                 <div class="month-control">
-                                    <h2 class="month-h2">@now.ToString("MMMM yyyy")</h2>
+                                    <h4 class="month-h2">@now.ToString("MMMM yyyy")</h4>
                                     <a href="@Url.Action("StaffGap", new { year = previousMonth.Year, month = previousMonth.Month })">&lt; Previous Month</a> --|--
                                     <a href="@Url.Action("StaffGap", new { year = nextMonth.Year, month = nextMonth.Month })">Next Month &gt;</a>
                                 </div>
@@ -183,10 +183,12 @@
                             </div>
                             @{
                                 DateTime chosenDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : now;
+                                DateTime chosenShiftDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : now;
                                 var requiredNumber = 10;
                             }
-                            <h2 class="month-h2">@chosenDay.ToString("dd MMMM yyyy")</h2>
+                            <h4 class="month-h2">@chosenDay.ToString("dd MMMM yyyy")</h4>
                             <div class="table-responsive">
+
                                 <table id="example" class="table table-hover contact-list footable-loaded footable m-t-0">
                                     <thead>
                                         <tr class="text-dark">
@@ -202,7 +204,7 @@
 
                                             var shiftsForDay = Model.WholeCalendarShifts.Where(x => x.StartDate.Value.Date <= chosenDay.Date && chosenDay.Date <= x.EndDate.Value.Date).ToList();
 
-                                            for (int i = 0; i<7; i++)
+                                            for (int i = 0; i < 7; i++)
                                             {
                                                 DateTime currentDay = DateTime.Now.Date;
                                                 DateTime day = currentDay.AddDays(i);
@@ -235,6 +237,46 @@
 
                                                 }
                                             </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-responsive" style="max-height: 50vh; overflow-y:scroll">
+                                <table id="example" class="table table-hover contact-list footable-loaded footable m-t-0">
+                                    <thead>
+                                        <tr class="text-dark">
+                                            <th class="footable-sortable text-center" scope="col">Name<span class="footable-sort-indicator"></span></th>
+                                            <th class="footable-sortable text-center" scope="col">Start Date<span class="footable-sort-indicator"></span></th>
+                                            <th class="footable-sortable text-center" scope="col">End Date<span class="footable-sort-indicator"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.WholeCalendarShifts != null)
+                                        {
+                                            foreach (var user in Model.AllUsers)
+                                            {
+                                                foreach (var shift in Model.WholeCalendarShifts)
+                                                {
+                                                    if (shift.StartDate.Value.Date == chosenShiftDay.Date || shift.EndDate.Value.Date == chosenShiftDay.Date)
+                                                    {
+
+
+                                                        <tr role="row" class="line-content">
+                                                            @if (user.UserId == shift.UserId)
+                                                            {
+                                                                <td>
+                                                                    @user.LastName, @user.FirstName
+                                                                </td>
+                                                                <td>@(shift.StartDate != null ? string.Format("{0:MMMM d , yyyy h:mm tt}", shift.StartDate) : "")</td>
+                                                                <td>@(shift.EndDate != null ? string.Format("{0:MMMM d , yyyy h:mm tt}", shift.EndDate) : "")</td>
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            }
+
                                         }
                                     </tbody>
                                 </table>

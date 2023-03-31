@@ -388,6 +388,20 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     Shift.StartTime = objShift.StartDate.TimeOfDay;
                     Shift.EndTime = objShift.EndDate.TimeOfDay;
                     db.ShiftSchedule.Add(Shift);
+                    db.SaveChanges();
+                    if (objShift.Days > 1)
+                    {
+                        for (int i = 1; i < objShift.Days; i++) 
+                        {
+                            Shift.UserId = objShift.UserId;
+                            Shift.StartDate = objShift.StartDate.AddDays(i);
+                            Shift.EndDate = objShift.EndDate.AddDays(i);
+                            Shift.StartTime = objShift.StartDate.TimeOfDay;
+                            Shift.EndTime = objShift.EndDate.TimeOfDay;
+                            db.ShiftSchedule.Add(Shift);
+                            db.SaveChanges();
+                        }
+                    }
                 }
                 else if (objShift.Id > 0)
                 {
@@ -402,9 +416,10 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         Shift.EndTime = objShift.EndDate.TimeOfDay;
                         //Shift.ShiftId = objShift.ShiftId;
                         db.Entry(Shift).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
-                db.SaveChanges();
+                
                 TempData["message"] = string.Format("Record saved successfully.");
             }
             return RedirectToAction("ShiftSchedule", new { userid = Shift.UserId });
