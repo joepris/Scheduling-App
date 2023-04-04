@@ -25,7 +25,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
     public class AdminController : Controller
     {
         NursingStaffEntities db = new NursingStaffEntities();
-
+        
         public ActionResult Index()
         {
             return View();
