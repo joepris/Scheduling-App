@@ -191,12 +191,12 @@
                                                         var hasShift = Model.WholeCalendarShifts.Find(x => x.StartDate.Value.Date == date || x.EndDate.Value.Date == date);
                                                         if (hasShift != null)
                                                         {<span><a href="@Url.Action("ShiftSchedule", new { year = now.Year, month = now.Month, day = day })">@day</a></span>}
-                                                    }
                                                     else
                                                     {
                                                         <span class="other-month">@day</span>
                                                     }
                                                 }
+
 
                                                 </td>
                                                 if (date.DayOfWeek == DayOfWeek.Saturday)
