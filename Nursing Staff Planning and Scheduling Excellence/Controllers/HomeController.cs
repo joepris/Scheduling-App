@@ -12,7 +12,6 @@ using System.Web.Mvc;
 
 namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 {
-    
     public class HomeController : Controller
     {
         NursingStaffEntities db = new NursingStaffEntities();

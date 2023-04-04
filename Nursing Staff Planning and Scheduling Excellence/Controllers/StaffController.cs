@@ -15,7 +15,7 @@ using System.Web.Mvc;
 
 namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 {
-    
+
     public class StaffController : Controller
     {
         NursingStaffEntities db = new NursingStaffEntities();
