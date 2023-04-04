@@ -19,10 +19,11 @@ using System.Web.UI.WebControls;
 
 namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         NursingStaffEntities db = new NursingStaffEntities();
-
+        
         public ActionResult Index()
         {
             return View();

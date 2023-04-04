@@ -48,7 +48,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 {
                     if (objResult.Password == loginrequest.Password)
                     {
-                        loginResponse.message = "Login Successfull";
+                        loginResponse.message = "Login Successful";
                         loginResponse.statuscode = HttpStatusCode.OK;
                         loginResponse.success = true;
                         loginResponse.UserId = objResult.UserId;
