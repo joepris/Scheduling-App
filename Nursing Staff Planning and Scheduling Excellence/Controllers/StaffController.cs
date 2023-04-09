@@ -15,7 +15,7 @@ using System.Web.Mvc;
 
 namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 {
-
+    [Authorize (Roles = "Staff")]
     public class StaffController : Controller
     {
         NursingStaffEntities db = new NursingStaffEntities();
@@ -124,68 +124,83 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         {
             int UserID = LoginRepository.GetUserID(User.Identity.Name);
             User user = new User();
-                if (objuser.UserId == 0)
+            var userDetails = db.User.Where(x => x.UserId == objuser.UserId).FirstOrDefault();
+            var sh = db.User.Where(x => x.UserName == objuser.UserName).FirstOrDefault();
+            if (userDetails != null)
+            {
+                if (sh != null)
                 {
-                    user.FirstName = objuser.FirstName;
-                    user.LastName = objuser.LastName;
-                    user.DOB = objuser.DOB;
-                    user.ZipCode = objuser.ZipCode;
-                    user.City = objuser.City;
-                    user.Province = objuser.Province;
-                    user.HomePhone = objuser.HomePhone;
-                    user.CellPhone = objuser.CellPhone;
-                    user.Email = objuser.Email;
-                    user.Address = objuser.Address;
-                    user.Sex = objuser.Sex;
-                    user.MaritalStatusId = objuser.MaritalStatusId ?? 0;
-                    user.UserName = objuser.UserName;
-                    user.Password = objuser.Password;
-                    user.Image = objuser.Image;
-                    user.Note = objuser.Note;
-
-                    user.UserRole = 2;
-                    db.User.Add(user);
-
+                    if(sh != userDetails)
+                    {
+                        TempData["DeleteMessage"] = string.Format("User name already in use");
+                        return RedirectToAction("SaveStaff");
+                    }
                 }
+            }
+            if (objuser.UserId == 0)
+                {
+                //user.FirstName = objuser.FirstName;
+                //user.LastName = objuser.LastName;
+                //user.DOB = objuser.DOB;
+                //user.ZipCode = objuser.ZipCode;
+                //user.City = objuser.City;
+                //user.Province = objuser.Province;
+                //user.HomePhone = objuser.HomePhone;
+                //user.CellPhone = objuser.CellPhone;
+                //user.Email = objuser.Email;
+                //user.Address = objuser.Address;
+                //user.Sex = objuser.Sex;
+                //user.MaritalStatusId = objuser.MaritalStatusId ?? 0;
+                //user.UserName = objuser.UserName;
+                //user.Password = objuser.Password;
+                //user.Image = objuser.Image;s
+                //user.Note = objuser.Note;
+
+                //user.UserRole = 2;
+                //db.User.Add(user);
+                return View("Error");
+
+            }
                 if (objuser.UserId > 0)
                 {
                     user = db.User.Where(m => m.UserId == objuser.UserId).FirstOrDefault();
                     if (objuser != null)
                     {
-                        user.FirstName = objuser.FirstName;
-                        user.LastName = objuser.LastName;
-                        user.DOB = objuser.DOB;
-                        user.ZipCode = objuser.ZipCode;
-                        user.City = objuser.City;
-                        user.Province = objuser.Province;
-                        user.HomePhone = objuser.HomePhone;
-                        user.CellPhone = objuser.CellPhone;
-                        user.UserRole = 2;
-                        user.Email = objuser.Email;
-                        user.Address = objuser.Address;
-                        user.Sex = objuser.Sex;
-                        user.MaritalStatusId = objuser.MaritalStatusId ?? 0;
                         user.UserName = objuser.UserName;
                         user.Password = objuser.Password;
-                        user.Note = objuser.Note;
-                        user.Fax = objuser.Fax;
-                      
+                        user.MaritalStatusId = objuser.MaritalStatusId ?? 0;
+                        user.Address = objuser.Address;
+                        user.City = objuser.City;
+                        user.Province = objuser.Province;
+                        user.ZipCode = objuser.ZipCode;
+                        user.CellPhone = objuser.CellPhone;
+                        user.HomePhone = objuser.HomePhone;
+                        
+                        user.Note = userDetails.Note;
+                        user.Fax = userDetails.Fax;
+                        user.Sex = userDetails.Sex;
+                        user.FirstName = userDetails.FirstName;
+                        user.LastName = userDetails.LastName;
+                        user.DOB = userDetails.DOB;
+                        user.UserRole = 2;
+                        user.Email = userDetails.Email;
+      
                         db.Entry(user).State = EntityState.Modified;
                     }
                 }
                 db.SaveChanges();
 
-                TempData["message"] = string.Format("Record save successfully. ");
-                return RedirectToAction("profile", "staff", new { UserID = UserID });
+                TempData["message"] = string.Format("Record updated successfully.");
+                return RedirectToAction("profile", "Staff", new { UserID = UserID });
             }
 
         [HttpGet]
-        public ActionResult ShiftSchedule(int? year, int? month, int? day)
+        public ActionResult ShiftSchedule(int? year, int? month, int? day, int? chosenYear, int? chosenMonth)
         {
-            DateTime chosenMonth = (year != null && month != null) ? new DateTime(year.Value, month.Value, 1) : DateTime.Now;
-            ViewBag.chosenMonth = chosenMonth;
+            DateTime monthSelected = (chosenYear != null && chosenMonth != null) ? new DateTime(year.Value, month.Value, DateTime.Now.Day) : DateTime.Now.Date;
+            ViewBag.chosenMonth = monthSelected;
 
-            DateTime chosenDate = (year != null && month != null && day != null) ? new DateTime(year.Value, month.Value, day.Value) : DateTime.Now;
+            DateTime chosenDate = (year != null && month != null && day != null) ? new DateTime(year.Value, month.Value, day.Value) : DateTime.Now.Date;
             ViewBag.chosenDate = chosenDate;
 
             int UserID = LoginRepository.GetUserID(User.Identity.Name);

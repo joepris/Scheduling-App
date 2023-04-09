@@ -75,7 +75,7 @@
                                         <tr role="row" class="line-content">
                                             <td class="text-center">@sno</td>
                                             <td class="text-center">@item.LastName, @item.FirstName</td>
-                                            <td class="text-center">@item.CellPhone</td>
+                                            <td class="text-center">@(item.CellPhone != null ? item.CellPhone : "N/A")</td>
                                             <td class="text-center">@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
                                             <td class="text-center">
                                                 <span class="delete"><a href="~/Admin/StaffDetails/@item.UserId" class="fcbtn btn btn-info btn-outline btn-1f">View</a></span>

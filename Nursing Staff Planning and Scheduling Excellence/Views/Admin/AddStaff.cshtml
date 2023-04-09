@@ -79,7 +79,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12"><span class="help"> Date of Birth</span></label>
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control datetimepicker", type = "date", placeholder = " Date Of Birth" } })
+                                        @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                                         @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
                                         @*@if (Model.DOB.HasValue && Model.DOB.Value <= DateTime.Today.AddYears(-18))
                                     {
@@ -113,7 +113,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12"><span class="help"> Address</span></label>
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = " Address" } })
+                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12"><span class="help"> City</span></label>
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = " City" } })
+                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City" } })
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12"><span class="help"> Province</span></label>
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.Province, new { htmlAttributes = new { @class = "form-control", placeholder = " Province" } })
+                                        @Html.EditorFor(model => model.Province, new { htmlAttributes = new { @class = "form-control", placeholder = "Province" } })
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +159,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-12">Cell Phone</label>
                                     <div class="col-sm-12">
-                                        @Html.EditorFor(model => model.CellPhone, new { htmlAttributes = new { @class = "form-control", placeholder = " cell Phone" } })
+                                        @Html.EditorFor(model => model.CellPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "Cell Phone" } })
                                     </div>
                                 </div>
                             </div>
@@ -192,35 +192,14 @@
             });
         });
     </script>
-    <script type="text/javascript">
+    @*<script type="text/javascript">
         $(document).ready(function () {
             $('input[type=datetime]').datetimepicker({
-                format: "MM/DD/YYYY"
+                format: "DD/MM/YYYY"
 
             });
 
         });
-    </script>
+    </script>*@
 }
 
-@*<h2>Calculate Age</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.LabelFor(m => m, "Date of Birth:")
-    @Html.TextBoxFor(m => m, new { type = "date" })
-    @Html.ValidationMessageFor(m => m)
-    <br />
-    <input type="submit" value="Calculate" />
-}
-
-@if (Model.HasValue && Model.Value <= DateTime.Today.AddYears(-18))
-{
-    int age = DateTime.Today.Year - Model.Value.Year;
-    if (DateTime.Today < Model.Value.AddYears(age)) age--;
-    <p>Your age is @age.</p>
-}
-else if (Model.HasValue)
-{
-    <p>You must be 18 years or older to use this service.</p>
-}*@

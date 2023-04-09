@@ -89,7 +89,7 @@
                                                 { @Html.Raw("N/A")}
                                                 </dd>
                                                 <dd>
-                                                    <a href="~/Staff/Savestaff/@Model.User.UserId" class="fcbtn btn btn-info btn-outline btn-1f">
+                                                    <a href="~/Admin/AddStaff/@Model.User.UserId" class="fcbtn btn btn-info btn-outline btn-1f">
                                                         Update
                                                     </a>
                                                 </dd>
@@ -155,13 +155,12 @@
                                                     var hasShift = Model.WholeCalendarShifts.Find(x => x.StartDate.Value.Date == date || x.EndDate.Value.Date == date);
                                                     if (hasShift != null)
                                                     {<span><a href="@Url.Action("StaffDetails", new { year = now.Year, month = now.Month, day = day })">@day</a></span>}
-                                                }
-                                                else
-                                                {
-                                                    <span class="other-month">@day</span>
+                                                    else
+                                                    {
+                                                        <span class="other-month">@day</span>
+                                                    }
                                                 }
 
-                                            }
                                             </td>
                                             if (date.DayOfWeek == DayOfWeek.Saturday)
                                             {
@@ -234,10 +233,6 @@
     </div>
 </div>
 
-@*foreach (var shiftstart in Model.WholeCalendarShifts)
-    {
-        var hasShift = Model.WholeCalendarShifts.FirstOrDefault(x => x.StartDate.Value.Date == date || x.EndDate.Value.Date == date);
-        var hasShift = Model.WholeCalendarShifts.Select(x => x.StartDate.Value.Date);*@
 
 <style>
     table {

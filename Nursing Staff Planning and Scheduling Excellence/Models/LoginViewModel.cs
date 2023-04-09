@@ -19,6 +19,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public bool success { get; set; }
         public string token { get; set; }
         public string message { get; set; }
+        public string failureMessage { get; set; }
         public HttpStatusCode statuscode { get; set; }
         public long UserId { get; set; }
         public string UserRole { get; set; }

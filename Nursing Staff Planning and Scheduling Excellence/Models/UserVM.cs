@@ -28,6 +28,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public string City { get; set; }
         public string Province{ get; set; }
         public string ZipCode { get; set; }
+        [Required(ErrorMessage = " Email is required")]
+
         public string Email { get; set; }
         public string HomePhone { get; set; }
         public string CellPhone { get; set; }
@@ -52,17 +54,5 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public List<GenderVM> genderList { get; set; }
         public List<Gender> gendersList { get; set; }
 
-        public static ValidationResult ValidateDateOfBirth(DateTime? DOB, ValidationContext context)
-        {
-            if (DOB.HasValue && DOB.Value > DateTime.Now)
-            {
-                return new ValidationResult("Date of Birth cannot be in the future.");
-            } else if(18 > DateTime.Now.Year - DOB.Value.Year )
-            {
-                return new ValidationResult("Date input must be older than 18 years old");
-            }
-
-            return ValidationResult.Success;
-        }
     }
 }
