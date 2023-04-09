@@ -13,6 +13,7 @@ using NursingStaffPlanningandSchedulingExcellence.Models;
 
 namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         NursingStaffEntities db = new NursingStaffEntities();
@@ -38,12 +39,12 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         {
             var loginResponse = new LoginResponse { };
             LoginViewModel loginrequest = new LoginViewModel { };
-            loginrequest.UserName = login.UserName.ToLower();
+            loginrequest.UserName = login.UserName;
             loginrequest.Password = login.Password;
 
             if (ModelState.IsValid)
             {
-                var objResult = db.User.Where(x => x.UserName == login.UserName && x.Password == login.Password).FirstOrDefault();
+                var objResult = db.User.Where(x => x.UserName == login.UserName).FirstOrDefault();
                 if (objResult != null && objResult.UserId > 0)
                 {
                     if (objResult.Password == loginrequest.Password)
@@ -59,6 +60,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     {
                         loginResponse.UserId = 0;
                         loginResponse.message = "Password incorrect";
+                        TempData["DeleteMessage"] = string.Format("Password incorrect");
                         loginResponse.statuscode = HttpStatusCode.BadRequest;
                         loginResponse.success = false;
                     }
@@ -66,6 +68,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 else
                 {
                     loginResponse.message = "Username does not exists.";
+                    TempData["DeleteMessage"] = string.Format("Username does not exists");
                     loginResponse.statuscode = HttpStatusCode.NotFound;
                     loginResponse.success = false;
                 }
@@ -87,7 +90,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                     HttpContext.Response.Cookies.Add(authCookie);
                     Session["token"] = loginResponse.token;
-                    TempData["message"] = loginResponse.message;
+                    //TempData["message"] = loginResponse.message;
                     if (loginResponse.UserRole == "Admin")
                     {
                         return RedirectToAction("Index", "Home");

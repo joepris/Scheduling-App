@@ -106,7 +106,7 @@
                                 Schedule List
                             </div>
                             <div class="table-responsive" style="max-height: 50vh; overflow-y:scroll">
-                                <table id="example" class="table table-hover contact-list footable-loaded footable m-t-0">
+                                <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
                                     <thead>
                                         <tr class="text-dark">
                                             <th class="footable-sortable text-center" scope="col">S.No<span class="footable-sort-indicator"></span></th>
@@ -117,21 +117,26 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @{
+                                            var now = ViewBag.chosenMonth != null ? ViewBag.chosenMonth : DateTime.Now.Date;
+                                        }
                                         @if (Model.ShiftScheduleList != null)
                                         {
-                                            //for (int i = 0; i < 5; i++) //overflow test
                                             {
                                                 foreach (var item in Model.WholeCalendarShifts)
                                                 {
-                                                    sno = sno + 1;
-                                                    <tr role="row" class="line-content">
-                                                        <td>@sno</td>
-                                                        <td>@(item.StartDate != null ? string.Format("{0:MMMM d , yyyy}", item.StartDate) : "")</td>
-                                                        <td>@(item.EndDate != null ? string.Format("{0:MMMM d , yyyy}", item.EndDate) : "")</td>
-                                                        <td>@(item.StartDate.Value.ToString("hh:mm tt"))</td>
-                                                        <td>@(item.EndDate.Value.ToString("hh:mm tt"))</td>
+                                                    if (item.StartDate.Value.Date >= now)
+                                                    {
+                                                        sno = sno + 1;
+                                                        <tr role="row" class="line-content">
+                                                            <td>@sno</td>
+                                                            <td>@(item.StartDate != null ? string.Format("{0:MMMM d , yyyy}", item.StartDate) : "")</td>
+                                                            <td>@(item.EndDate != null ? string.Format("{0:MMMM d , yyyy}", item.EndDate) : "")</td>
+                                                            <td>@(item.StartDate.Value.ToString("hh:mm tt"))</td>
+                                                            <td>@(item.EndDate.Value.ToString("hh:mm tt"))</td>
+                                                        </tr>
+                                                    }
 
-                                                    </tr>
                                                 }
                                             }
                                         }
@@ -145,7 +150,6 @@
                             <div class="panel-heading "> My Calendar</div>
                             <div class="white-box">
                                 @{
-                                    var now = ViewBag.chosenMonth != null ? ViewBag.chosenMonth : DateTime.Now;
                                     var daysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
                                     var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
                                     var lastDayOfMonth = new DateTime(now.Year, now.Month, daysInMonth);
@@ -190,21 +194,13 @@
                                                     {
                                                         var hasShift = Model.WholeCalendarShifts.Find(x => x.StartDate.Value.Date == date || x.EndDate.Value.Date == date);
                                                         if (hasShift != null)
-                                                        {<span><a href="@Url.Action("ShiftSchedule", new { year = now.Year, month = now.Month, day = day })">@day</a></span>}
+                                {<span><a href="@Url.Action("ShiftSchedule", new { year = now.Year, month = now.Month, day = day, chosenYear = now.Year , chosenMonth = now.Month})">@day</a></span>}
 
                                                         else
                                                         {
                                                             <span class="other-month">@day</span>
                                                         }
-
-
-                                                    else
-                                                    {
-                                                        <span class="other-month">@day</span>
                                                     }
-
-                                                }
-
 
                                                 </td>
                                                 if (date.DayOfWeek == DayOfWeek.Saturday)

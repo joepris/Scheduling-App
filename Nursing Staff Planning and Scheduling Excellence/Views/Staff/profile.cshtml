@@ -72,13 +72,14 @@
                                             @Model.UserName
                                         </dd>
                                         <dd>
-                                            @Model.DOB
+                                            @Model.DOB.Date
                                         </dd>
                                         <dd>
                                             @Model.GenderName
                                         </dd>
                                         <dd>
-                                            @Model.Address, @Model.City, @Model.Province, @Model.ZipCode
+
+                                            @(Model.Address != null ? Model.Address : "N/A"), @(Model.City != null ? Model.City : "N/A"), @(Model.Province != null ? Model.Province : "N/A"), @(Model.ZipCode != null ? Model.ZipCode : "N/A")
                                         </dd>
                                         <dd>
                                             @Model.Email
@@ -95,7 +96,7 @@
                                         </dd>
                                         <dd>
                                             <a href="~/Staff/Savestaff/@Model.UserId" class="fcbtn btn btn-info btn-outline btn-1f">
-                                                Request Update
+                                                Edit Details
                                             </a>
                                         </dd>
                                     </dl>

@@ -142,6 +142,7 @@
 
 <div class="container-fluid">
     <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+        
         <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
 
             @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-material" }))
@@ -149,7 +150,9 @@
                 <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h3>Admin/Staff Login</h3>
+
                     </div>
+
                     <div class="form-floating mb-3">
                         @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "User name" } })
                         @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
@@ -160,11 +163,23 @@
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         <label for="floatingPassword">Password</label>
                     </div>
-
-                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                    <div class="row m-t-20">
+                        @if (TempData["Message"] != null)
+                        {
+                            <div class="alert alert-success" style="float: right;" role="alert">
+                                <b>@TempData["Message"]</b>
+                            </div>
+                        }
+                        @if (TempData["DeleteMessage"] != null)
+                        {
+                            <div class="alert alert-danger" style="float: right;" role="alert">
+                                <b>@TempData["DeleteMessage"]</b>
+                            </div>
+                        }
+                    </div>
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
                 </div>
             }
-
         </div>
     </div>
 </div>
