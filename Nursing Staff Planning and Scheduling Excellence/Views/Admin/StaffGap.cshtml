@@ -3,9 +3,10 @@
     ViewBag.Title = "StaffGap";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int sno = 0;
-    int[] gapForNextDays = new int[7];
-    int[] requiredStaff = new int[7];
-    int[] actualStaffNumber = new int[7];
+    string[] followingDays = new string[14];
+    int[] gapForNextDays = new int[14];
+    int[] requiredStaff = new int[14];
+    int[] actualStaffNumber = new int[14];
 }
 
 <style>
@@ -39,7 +40,7 @@
 
     .table-schedule {
         width: 80%;
-        margin: 3.5rem auto;
+        margin: 2.5rem auto;
     }
 
         .table-schedule td, .table-schedule th {
@@ -102,7 +103,7 @@
                     <b>@TempData["DeleteMessage"]</b>
                 </div>
             }
-        <canvas id="myChart" style="max-height:25vw; min-height:25vw"></canvas>
+            <canvas id="myChart" style="max-height:25vw; min-height:25vw; margin-bottom:10px"></canvas>
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -120,7 +121,7 @@
                                 }
 
                                 <div class="month-control">
-                                    <h2 class="month-h2">@now.ToString("MMMM yyyy")</h2>
+                                    <h4 class="month-h2">@now.ToString("MMMM yyyy")</h4>
                                     <a href="@Url.Action("StaffGap", new { year = previousMonth.Year, month = previousMonth.Month })">&lt; Previous Month</a> --|--
                                     <a href="@Url.Action("StaffGap", new { year = nextMonth.Year, month = nextMonth.Month })">Next Month &gt;</a>
                                 </div>
@@ -179,18 +180,19 @@
                     <div class="col">
                         <div class="panel-info">
                             <div class="panel-heading">
-                                Table Gap
+                                Table Gap of Selected Date
                             </div>
                             @{
                                 DateTime chosenDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : now;
-                                var requiredNumber = 10;
+                                DateTime chosenShiftDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : now;
+                                var requiredNumber = 12;
                             }
-                            <h2 class="month-h2">@chosenDay.ToString("dd MMMM yyyy")</h2>
+                            <h4 class="month-h2">@chosenDay.ToString("dd MMMM yyyy")</h4>
                             <div class="table-responsive">
+
                                 <table id="example" class="table table-hover contact-list footable-loaded footable m-t-0">
                                     <thead>
                                         <tr class="text-dark">
-                                            <th class="footable-sortable text-center" scope="col">Date<span class="footable-sort-indicator"></span></th>
                                             <th class="footable-sortable text-center" scope="col">Required Number of Staff<span class="footable-sort-indicator"></span></th>
                                             <th class="footable-sortable text-center" scope="col">Number of Staff for the Day<span class="footable-sort-indicator"></span></th>
                                             <th class="footable-sortable text-center" scope="col">Gap<span class="footable-sort-indicator"></span></th>
@@ -200,23 +202,27 @@
                                         @if (Model.WholeCalendarShifts != null)
                                         {
 
-                                            var shiftsForDay = Model.WholeCalendarShifts.Where(x => x.StartDate.Value.Date <= chosenDay.Date && chosenDay.Date <= x.EndDate.Value.Date).ToList();
+                                            var shiftsForDay = Model.WholeCalendarShifts.Where(x => x.StartDate.Value.Date == chosenDay.Date).ToList();
 
-                                            for (int i = 0; i<7; i++)
+                                            for (int i = 0; i < 14; i++)
                                             {
                                                 DateTime currentDay = DateTime.Now.Date;
                                                 DateTime day = currentDay.AddDays(i);
-                                                var gapForDay = Model.WholeCalendarShifts.Where(x => x.StartDate.Value.Date <= day.Date && day.Date <= x.EndDate.Value.Date).ToList();
+                                                var gapForDay = Model.WholeCalendarShifts.Where(x => x.StartDate.Value.Date == day.Date).ToList();
                                                 var gap = requiredNumber - gapForDay.Count;
+                                                followingDays[0] = "Today";
+                                                followingDays[i] = day.DayOfWeek.ToString();
                                                 actualStaffNumber[i] = gapForDay.Count;
                                                 requiredStaff[i] = requiredNumber;
                                                 gapForNextDays[i] = gap;
+                                                if (i > 6)
+                                                {
+                                                    followingDays[i] = (day.DayOfWeek.ToString() + "(2)");
+                                                }
                                             }
+
                                             sno = sno + 1;
                                             <tr role="row" class="line-content">
-                                                <td>
-                                                    @string.Format("{0:MMMM d , yyyy}", chosenDay)
-                                                </td>
                                                 <td>@requiredNumber</td>
                                                 <td>@shiftsForDay.Count</td>
                                                 @if ((requiredNumber - shiftsForDay.Count) > 0)
@@ -226,7 +232,7 @@
                                                 else
                                                 if ((requiredNumber - shiftsForDay.Count) < 0)
                                                 {
-                                                    <td style="color:yellow">@(requiredNumber-shiftsForDay.Count) (too much)</td>
+                                                    <td style="color:blue">@(requiredNumber-shiftsForDay.Count) (too much)</td>
                                                 }
                                                 else
                                                     if ((requiredNumber - shiftsForDay.Count) == 0)
@@ -235,6 +241,46 @@
 
                                                 }
                                             </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-responsive" style="max-height: 50vh; overflow-y:scroll">
+                                <table id="example" class="table table-hover contact-list footable-loaded footable m-t-0">
+                                    <thead>
+                                        <tr class="text-dark">
+                                            <th class="footable-sortable text-center" scope="col">Name<span class="footable-sort-indicator"></span></th>
+                                            <th class="footable-sortable text-center" scope="col">Start Date<span class="footable-sort-indicator"></span></th>
+                                            <th class="footable-sortable text-center" scope="col">End Date<span class="footable-sort-indicator"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.WholeCalendarShifts != null)
+                                        {
+                                            foreach (var user in Model.AllUsers)
+                                            {
+                                                foreach (var shift in Model.WholeCalendarShifts)
+                                                {
+                                                    if (shift.StartDate.Value.Date == chosenShiftDay.Date)
+                                                    {
+
+
+                                                        <tr role="row" class="line-content">
+                                                            @if (user.UserId == shift.UserId)
+                                                            {
+                                                                <td>
+                                                                    @user.LastName, @user.FirstName
+                                                                </td>
+                                                                <td>@(shift.StartDate != null ? string.Format("{0:MMMM d , yyyy h:mm tt}", shift.StartDate) : "")</td>
+                                                                <td>@(shift.EndDate != null ? string.Format("{0:MMMM d , yyyy h:mm tt}", shift.EndDate) : "")</td>
+                                                            }
+
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            }
+
                                         }
                                     </tbody>
                                 </table>
@@ -250,10 +296,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
 <script>
-    // Sample data for the next 7 days
+
     var data = {
-        labels: ['Today', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+    // Sample data for the next 14 days
+        labels: @Html.Raw(Json.Encode(followingDays)),
         datasets: [{
             label: 'Gap',
             data: @Html.Raw(Json.Encode(gapForNextDays)),
@@ -265,23 +313,23 @@
             ],
             borderWidth: 1
         },{
-            label: 'Required',
+            label: 'Peak',
             data: @Html.Raw(Json.Encode(requiredStaff)),
             backgroundColor: [
-                'rgba(111, 222, 111, 0.2)',
+                'rgba(65, 65, 65, 0.2)',
             ],
             borderColor: [
-                'rgba(111, 222, 111, 1)',
+                'rgba(65, 65, 65, 1)',
             ],
             borderWidth: 1
         },{
             label: 'Actual',
             data: @Html.Raw(Json.Encode(actualStaffNumber)),
             backgroundColor: [
-                'rgba(0, 63, 76, 0.2)',
+                'rgba(111, 222, 111, 0.2)',
             ],
             borderColor: [
-                'rgba(0, 63, 76, 1)',
+                'rgba(111, 222, 111, 1)',
             ],
             borderWidth: 1
         }]

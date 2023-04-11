@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -23,7 +24,10 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public Nullable<int> ShiftId { get; set; }
         public string Assignname { get; set; }
         [Required(ErrorMessage = " Number of hours is required")]
+        [DefaultValue(8)]
         public int Hours { get; set; }
+        [DefaultValue(1)]
+        public int Days { get; set; }
 
         public List<ShiftSchedule> ShiftScheduleList { get; set; }
         public List<ShiftSchedule> WholeCalendarShifts { get; set; }

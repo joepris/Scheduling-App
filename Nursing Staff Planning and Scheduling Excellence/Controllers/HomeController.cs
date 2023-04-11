@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 {
+    [Authorize(Roles = "Admin, Staff")]
     public class HomeController : Controller
     {
         NursingStaffEntities db = new NursingStaffEntities();
