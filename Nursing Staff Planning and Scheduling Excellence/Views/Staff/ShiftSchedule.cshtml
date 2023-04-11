@@ -125,7 +125,7 @@
                                             {
                                                 foreach (var item in Model.WholeCalendarShifts)
                                                 {
-                                                    if (item.StartDate.Value.Date >= now)
+                                                    if (item.StartDate.Value.Date >= now || item.EndDate.Value.Date == now)
                                                     {
                                                         sno = sno + 1;
                                                         <tr role="row" class="line-content">
