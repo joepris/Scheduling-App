@@ -2281,6 +2281,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\dbo.ShiftSchedule.data.sql" />
+    <Content Include="Models\dbo.User.data.sql" />
     <Content Include="Models\NurseSched.sql" />
     <Content Include="Models\Nurse.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

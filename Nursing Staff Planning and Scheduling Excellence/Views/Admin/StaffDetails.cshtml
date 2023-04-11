@@ -73,7 +73,7 @@
                                                     @Model.User.DOB
                                                 </dd>
                                                 <dd>
-                                                    @Model.User.Address, @Model.User.City, @Model.User.Province, @Model.User.ZipCode
+                                                   @(Model.User.Address != null ? Model.User.Address : "N/A"), @(Model.User.City != null ? Model.User.City : "N/A"), @(Model.User.Province != null ? Model.User.Province : "N/A"), @(Model.User.ZipCode != null ? Model.User.ZipCode : "N/A")
                                                 </dd>
                                                 <dd>
                                                     @Model.User.Email
