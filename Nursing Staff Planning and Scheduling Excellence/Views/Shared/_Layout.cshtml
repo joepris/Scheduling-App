@@ -2,6 +2,7 @@
     string currentUrl = Request.RawUrl;
 }
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -43,6 +44,7 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
+        @Html.Partial("_Signature")
         <!-- Spinner End -->
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
@@ -149,19 +151,13 @@
                 $(this).remove();
             });
         }, 0);
-                    //$(document).ready(function () {
-                    //    $('input[type=datetime]').datetimepicker({
-                    //        format: 'MM-DD-YYYY ',
-
-                    //    });
-
-                    //});
-
+                   
+        //App has been developed by Software Development Students of Bow Valley College, Calgary, Canada (Feb 15 2023 to April 15 2023)
     </script>
     @RenderSection("scripts", required: false)
 
 
-
+    <!-- App has been developed by Software Development Students of Bow Valley College, Calgary, Canada (Feb 15 2023 to April 15 2023) -->
 </body>
 
 </html>
