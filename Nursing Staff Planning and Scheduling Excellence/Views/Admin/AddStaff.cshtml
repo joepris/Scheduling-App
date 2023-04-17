@@ -129,9 +129,9 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-md-12"><span class="help"> Province</span></label>
+                                    <label class="col-md-12"><span class="help"> State</span></label>
                                     <div class="col-md-12">
-                                        @Html.EditorFor(model => model.Province, new { htmlAttributes = new { @class = "form-control", placeholder = "Province" } })
+                                        @Html.EditorFor(model => model.Province, new { htmlAttributes = new { @class = "form-control", placeholder = "State" } })
                                     </div>
                                 </div>
                             </div>
@@ -163,6 +163,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-12">Nurse Certification Expiry Date</label>
+                                    <div class="col-sm-12">
+                                        @Html.EditorFor(model => model.NurseCertification, new { htmlAttributes = new { @class = "form-control", placeholder = "Expiry Date of Certification", type = "date" } })
+                                        @Html.ValidationMessageFor(model => model.NurseCertification, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-2 col-sm-4 col-xs-12">
                             <br /><br />
@@ -189,6 +198,10 @@
                 if (age < 18) {
                     alert("Must be 18 and above")
                 }
+            });
+            $('#NurseCertification').change(function () {
+                var dob = new Date($(this).val());
+                var today = new Date();
             });
         });
     </script>

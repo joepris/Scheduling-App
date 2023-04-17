@@ -36,6 +36,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public string Image { get; set; }
         public string Note { get; set; }
         public string Fax { get; set; }
+        public Nullable<System.DateTime> NurseCertification { get; set; }
     
         public virtual Gender Gender { get; set; }
         public virtual MaritalStatus MaritalStatus { get; set; }

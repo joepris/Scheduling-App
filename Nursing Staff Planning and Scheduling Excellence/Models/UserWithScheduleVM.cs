@@ -18,6 +18,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         }
 
         public UserVM User { get; set; }
+        public List<UserVM> userList { get; set; }
         public List<ShiftSchedule> ShiftScheduleList { get; set; }
         public List<ShiftSchedule> WholeCalendarShifts { get; set; }
     }

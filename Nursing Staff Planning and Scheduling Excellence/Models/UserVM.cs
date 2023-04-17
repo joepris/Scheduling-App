@@ -1,6 +1,7 @@
 ﻿using NursingStaffPlanningandSchedulingExcellence.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -25,10 +26,18 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         [Required(ErrorMessage = " Gender is required")]
         public Nullable<int> Sex { get; set; }
         public string Address { get; set; }
+        [Required(ErrorMessage = "Epiration of Nurse Certification is required")]
+        public DateTime NurseCertification { get; set; }
         public string City { get; set; }
         public string Province{ get; set; }
         public string ZipCode { get; set; }
-        [Required(ErrorMessage = " Email is required")]
+        [DataType(DataType.EmailAddress)]
+
+        [RegularExpression(@"^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$", ErrorMessage = "Please enter a valid email address")]
+
+        [Required(ErrorMessage = "Email address is required")]
+
+        [StringLength(254, ErrorMessage = "Email cannot be longer than 254 characters")]
 
         public string Email { get; set; }
         public string HomePhone { get; set; }
@@ -53,6 +62,6 @@ namespace NursingStaffPlanningandSchedulingExcellence.Models
         public List<MaritalStatus> maritalsList { get; set; }
         public List<GenderVM> genderList { get; set; }
         public List<Gender> gendersList { get; set; }
-
+        public string Enddate { get; set; }
     }
 }

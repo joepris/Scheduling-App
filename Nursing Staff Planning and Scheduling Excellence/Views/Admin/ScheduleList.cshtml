@@ -3,6 +3,7 @@
     ViewBag.Title = "AllStaffList";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var sno = 0;
+    DateTime chosenDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : null;
 }
 
 <div id="page-wrapper">
@@ -31,6 +32,7 @@
                                     <th scope="col">S.No</th>
                                     <th scope="col">Full Name</th>
                                     <th scope="col">Cell Phone</th>
+                                    <th scope="col">Email</th>
                                     <th scope="col">Date Of Birth</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -38,18 +40,19 @@
                             <tbody>
                                 @if (Model.userList != null)
                                 {
-                                    foreach (var item in Model.userList)
+                                    foreach (var user in Model.userList)
                                     {
                                         sno = sno + 1;
                                         <tr>
 
                                             <td>@sno</td>
-                                            <td>@item.LastName, @item.FirstName</td>
-                                            <td>@item.CellPhone</td>
-                                            <td>@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
+                                            <td>@user.LastName, @user.FirstName</td>
+                                            <td>@user.CellPhone</td>
+                                            <td>@user.Email</td>
+                                            <td>@(user.DOB != null ? string.Format("{0:MMMM d , yyyy}", user.DOB) : "")</td>
                                             <td>
-                                                <a class="fcbtn btn btn-info btn-outline btn-1f" href="~/Admin/ShiftSchedule/?userid=@item.UserId">Schedule </a>
-
+                                                <a class="fcbtn btn btn-info btn-outline btn-1f" href="~/Admin/ShiftSchedule/?userid=@user.UserId">Schedule </a>
+                                                @*<a class="fcbtn btn btn-info btn-outline btn-1f" href="~/Admin/ShiftSchedule/?userid=@user.UserId">Schedule Records</a>*@
                                             </td>
                                         </tr>
                                     }

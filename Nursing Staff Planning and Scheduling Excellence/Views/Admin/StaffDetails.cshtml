@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Staff Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var sno = 0;
+    var dateCertificationExpiry = DateTime.Now.Date;
+    var oneMonth = dateCertificationExpiry.AddMonths(1) - dateCertificationExpiry;
 }
 
 <div id="page-wrapper">
@@ -42,6 +45,9 @@
                                                 <dt>
                                                     Date of Birth
                                                 </dt>
+                                                <dt>
+                                                    Nurse Certification Status
+                                                </dt>
 
                                                 <dt>
                                                     Address
@@ -72,8 +78,29 @@
                                                 <dd>
                                                     @Model.User.DOB
                                                 </dd>
+                                                @if (dateCertificationExpiry < Model.User.NurseCertification)
+                                                {
+                                                    if (Model.User.NurseCertification - dateCertificationExpiry > dateCertificationExpiry.AddMonths(1) - dateCertificationExpiry)
+                                                    {
+                                                        <dd style="color:green">
+                                                            Good Until: (@string.Format("{0:MMMM d , yyyy}", Model.User.NurseCertification.Date))
+                                                        </dd>
+                                                    }
+                                                    else
+                                                    {
+                                                        <dd style="color:orange">
+                                                            Expiring: (@string.Format("{0:MMMM d , yyyy}", Model.User.NurseCertification.Date))
+                                                        </dd>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <dd style="color:red">
+                                                        Expired: (@string.Format("{0:MMMM d , yyyy}", Model.User.NurseCertification.Date))
+                                                    </dd>
+                                                }
                                                 <dd>
-                                                   @(Model.User.Address != null ? Model.User.Address : "N/A"), @(Model.User.City != null ? Model.User.City : "N/A"), @(Model.User.Province != null ? Model.User.Province : "N/A"), @(Model.User.ZipCode != null ? Model.User.ZipCode : "N/A")
+                                                    @(Model.User.Address != null ? Model.User.Address : "N/A"), @(Model.User.City != null ? Model.User.City : "N/A"), @(Model.User.Province != null ? Model.User.Province : "N/A"), @(Model.User.ZipCode != null ? Model.User.ZipCode : "N/A")
                                                 </dd>
                                                 <dd>
                                                     @Model.User.Email
@@ -227,6 +254,47 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading "> Shift Schedule List </div>
+                <div class="white-box">
+                    <div class="table-responsive">
+                        @*<br /><br /><br />*@
+                        <table id="example" class="table  table-hover contact-list footable-loaded footable m-t-0" data-page-size="4">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Start Date</th>
+                                    <th scope="col">End Date</th>
+                                    <th scope="col">Start Time</th>
+                                    <th scope="col">End Time</th>
+                                    <th scope="col">Total Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var shift in Model.WholeCalendarShifts)
+                                {
+                                    
+                                    sno = sno + 1;
+                                    <tr>
+
+                                        <td>@sno</td>
+                                        <td>@(shift.StartDate.Value.Date != null ? string.Format("{0:MMMM d , yyyy}", shift.StartDate.Value.Date) : "")</td>
+                                        <td>@(shift.EndDate.Value.Date != null ? string.Format("{0:MMMM d , yyyy}", shift.EndDate.Value.Date) : "")</td>
+                                        <td>@shift.StartTime</td>
+                                        <td>@shift.EndTime</td>
+                                        @{
+                                            TimeSpan Hours = shift.EndDate.Value - shift.StartDate.Value;
+                                            int totalHours = Convert.ToInt32(Hours.TotalHours);
+                                        }
+                                        <td>@totalHours</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

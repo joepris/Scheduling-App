@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "My Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var dateCertificationExpiry = DateTime.Now.Date;
+    var oneMonth = dateCertificationExpiry.AddMonths(1) - dateCertificationExpiry;
+    var cutime = DateTime.Now;
+    var startdate = @ViewBag.CurrentStartTimer;
+    var Enddate = @ViewBag.Enddate;
 }
 
 <div id="page-wrapper">
@@ -18,6 +23,30 @@
             {
                 <div class="alert alert-danger" style="float: right;" role="alert">
                     <b>@TempData["DeleteMessage"]</b>
+                </div>
+            }
+            @if (ViewBag.CurrentStartTimer != null)
+            {
+                <div class="TimerClass">
+                    <h2 class="timess"> Next Shift Remaining Time : </h2>
+                    <div id="timer" class="timess">
+                        <div class="timess" id="days"></div>
+                        <div class="timess" id="hours"></div>
+                        <div class="timess" id="minutes"></div>
+                        <div class="timess" id="seconds"></div>
+                    </div>
+                </div>
+            }
+            else if (ViewBag.Timer != null)
+            {
+                <div class="TimwerClass">
+                    <h2 class="timess"> Next Shift Remaining Time : </h2>
+                    <div id="timer" class="timess">
+                        <div class="timess" id="days"></div>
+                        <div class="timess" id="hours"></div>
+                        <div class="timess" id="minutes"></div>
+                        <div class="timess" id="seconds"></div>
+                    </div>
                 </div>
             }
             <div class="panel panel-info">
@@ -39,6 +68,10 @@
 
                                         <dt>
                                             Date of Birth
+                                        </dt>
+
+                                        <dt>
+                                            Nurse Certification Status
                                         </dt>
 
                                         <dt>
@@ -74,6 +107,29 @@
                                         <dd>
                                             @Model.DOB.Date
                                         </dd>
+                                        @if (dateCertificationExpiry < Model.NurseCertification)
+                                        {
+                                            if (Model.NurseCertification - dateCertificationExpiry > dateCertificationExpiry.AddMonths(1) - dateCertificationExpiry)
+                                            {
+                                                <dd style="color:green">
+                                                    Good Until: (@string.Format("{0:MMMM d , yyyy}", Model.NurseCertification))
+                                                </dd>
+                                            }
+                                            else
+                                            {
+                                                <dd style="color:orange">
+                                                    Expiring: (@string.Format("{0:MMMM d , yyyy}", Model.NurseCertification))
+                                                </dd>
+                                            }
+
+
+                                        }
+                                        else
+                                        {
+                                            <dd style="color:red">
+                                                Expired: (@string.Format("{0:MMMM d , yyyy}", Model.NurseCertification))
+                                            </dd>
+                                        }
                                         <dd>
                                             @Model.GenderName
                                         </dd>
@@ -187,4 +243,83 @@
         width: 100%;
         text-align: center;
     }
+    .TimerClass {
+        line-height: 58px;
+        font-size: 64px;
+    }
+
+    .timess {
+        display: inline-block;
+        padding: 10px;
+        font-size: 20px;
+    }
+
+    .timess1 {
+        display: inline-block;
+        padding: 10px;
+        font-size: 20px;
+        color: red;
+    }
+
+    #days {
+        font-size: 20px;
+        color: #db4844;
+    }
+
+    #hours {
+        font-size: 20px;
+        color: #f07c22;
+    }
+
+    #minutes {
+        font-size: 20px;
+        color: #f6da74;
+    }
+
+    #seconds {
+        font-size: 15px;
+        color: #abcd58;
+    }
 </style>
+
+<script>
+        function makeTimer() {
+            var endTime = Date;
+
+
+            if ('@Model.Enddate' != '') {
+                if ('@ViewBag.CurrentStartTimmer' > '@ViewBag.Enddate') {
+                    endTime = new Date('@ViewBag.Enddate');
+                }
+                else {
+                    endTime = new Date('@ViewBag.Enddate');
+                }
+            }
+            else {
+                 endTime = new Date('@ViewBag.Timer');
+            }
+            endTime = (Date.parse(endTime) / 1000);
+
+            var now = new Date();
+            now = (Date.parse(now) / 1000);
+
+            var timeLeft = endTime - now;
+
+            var days = Math.floor(timeLeft / 86400);
+            var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+            var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600)) / 60);
+            var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+            if (hours < "10") { hours = "0" + hours; }
+            if (minutes < "10") { minutes = "0" + minutes; }
+            if (seconds < "10") { seconds = "0" + seconds; }
+
+            $("#days").html(days + "<span>Days</span>");
+            $("#hours").html(hours + "<span>Hours</span>");
+            $("#minutes").html(minutes + "<span>Minutes</span>");
+            $("#seconds").html(seconds + "<span>Seconds</span>");
+
+        }
+
+        setInterval(function () { makeTimer(); }, 1000);
+</script>
