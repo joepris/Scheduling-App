@@ -187,7 +187,8 @@
                                 DateTime chosenShiftDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : now;
                                 var requiredNumber = 12;
                             }
-                            <h4 class="month-h2">@chosenDay.ToString("dd MMMM yyyy")</h4>
+                            <h4 class="month-h2">@chosenDay.ToString("dd MMMM yyyy") | <a class="fcbtn btn btn-info btn-outline btn-1f" href="~/Admin/ScheduleList?year=@chosenDay.Year&month=@chosenDay.Month&day=@chosenDay.Day">Fill Gap</a> </h4> 
+
                             <div class="table-responsive">
 
                                 <table id="example" class="table table-hover contact-list footable-loaded footable m-t-0">

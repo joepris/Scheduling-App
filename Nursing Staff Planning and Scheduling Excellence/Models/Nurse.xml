@@ -64,7 +64,7 @@
           <Property Name="Image" Type="nvarchar" MaxLength="50" />
           <Property Name="Note" Type="nvarchar" MaxLength="50" />
           <Property Name="Fax" Type="nvarchar" MaxLength="50" />
-          <Property Name="NurseCertification" Type="datetime" />
+          <Property Name="NurseCertification" Type="datetime" Nullable="false" DefaultValue="0" />
         </EntityType>
         <Association Name="FK_MaritalStatus_MaritalStatus">
           <End Role="MaritalStatus" Type="Self.MaritalStatus" Multiplicity="1" />
@@ -231,7 +231,7 @@
           <NavigationProperty Name="Gender" Relationship="NursingStaffModel.FK_User_Gender" FromRole="User" ToRole="Gender" />
           <NavigationProperty Name="MaritalStatus" Relationship="NursingStaffModel.FK_User_MaritalStatus" FromRole="User" ToRole="MaritalStatus" />
           <NavigationProperty Name="Role" Relationship="NursingStaffModel.FK_User_Role" FromRole="User" ToRole="Role" />
-          <Property Name="NurseCertification" Type="DateTime" Precision="3" />
+          <Property Name="NurseCertification" Type="DateTime" Precision="3" Nullable="false" />
         </EntityType>
         <Association Name="FK_User_Gender">
           <End Type="NursingStaffModel.Gender" Role="Gender" Multiplicity="0..1" />
@@ -349,7 +349,6 @@
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="Note" ColumnName="Note" />
           <ScalarProperty Name="Fax" ColumnName="Fax" />
-		  <ScalarProperty Name="NurseCertification" ColumnName="NurseCertification" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

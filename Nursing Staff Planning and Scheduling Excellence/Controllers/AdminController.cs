@@ -29,8 +29,6 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             return View();
         }
 
-
-
         #region Staff
         public ActionResult AllStaffList()
         {
@@ -61,11 +59,12 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         Image = s.Image,
                         Note = s.Note,
                         Fax = s.Fax,
+                        NurseCertification = (DateTime)s.NurseCertification,
 
                         FullName = s.FirstName + "" + s.LastName,
                         GenderName = s.Gender.GenderName,
                         MaritalStatus = s.MaritalStatus.MaritalStatusName,
-                    }).ToList();
+                    }).OrderBy(x=>x.LastName).ToList();
                 }
                
             }
@@ -74,7 +73,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 
             }
             return View(obj);
-
+           
         }
 
         [HttpGet]
@@ -108,6 +107,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     obj.UserRole = task.UserRole;
                     obj.Note = task.Note;
                     obj.Fax = task.Fax;
+                    obj.NurseCertification = (DateTime)task.NurseCertification.Value.Date;
 
                     obj.GenderName = task.Gender?.GenderName;
                     obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
@@ -176,6 +176,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 user.Password = objuser.Password;
                 user.Image = objuser.Image;
                 user.Note = objuser.Note;
+                user.NurseCertification = objuser.NurseCertification;
 
                 user.UserRole = 2;
                 db.User.Add(user);
@@ -203,6 +204,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     user.Password = objuser.Password;
                     user.Note = objuser.Note;
                     user.Fax = objuser.Fax;
+                    user.NurseCertification = objuser.NurseCertification;
 
                     db.Entry(user).State = EntityState.Modified;
                 }
@@ -273,16 +275,17 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         Specialization = task.Specialization,
                         UserRole = task.UserRole,
                         Note = task.Note,
-                        Fax = task.Fax
+                        Fax = task.Fax,
+                        NurseCertification = (DateTime)task.NurseCertification
                     }
-                //    staffDetails.User.gendersList = db.Gender.ToList()
+                //staffDetails.User.gendersList = db.Gender.ToList()
                 //obj.maritalsList = db.MaritalStatus.ToList();
                 //obj.rolesList = db.Role.ToList();
 
             };
 
                 staffDetails.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == id && DbFunctions.TruncateTime(x.StartDate) <= chosenDate.Date && chosenDate.Date <= DbFunctions.TruncateTime(x.EndDate)).ToList();
-                staffDetails.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == id).ToList();
+                staffDetails.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == id).OrderBy(x => x.StartDate).ToList();
                 return View(staffDetails);
             }
 
@@ -324,6 +327,16 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         public ActionResult ShiftSchedule(int? UserId, int? id, DateTime? StartDate)
         {
             int UserID = LoginRepository.GetUserID(User.Identity.Name);
+            var checkUserDb = db.User.Where(x => x.UserId == UserId).FirstOrDefault();
+            if(checkUserDb.NurseCertification < DateTime.Now)
+            {
+                TempData["DeleteMessage"] = string.Format("Nurse Certification of "+ checkUserDb.FirstName + " " + checkUserDb.LastName + " has Expired");
+                return RedirectToAction("ScheduleList");
+            }
+            if (checkUserDb.NurseCertification < DateTime.Now.Date.AddMonths(1))
+            {
+                TempData["DeleteMessage"] = string.Format("Nurse Certification of " + checkUserDb.FirstName + " " + checkUserDb.LastName + " is Expiring");
+            }
             ShiftScheduleVM obj = new ShiftScheduleVM();
             try
             {
@@ -342,7 +355,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     }
                 }
 
-                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserId && x.EndDate >= DateTime.Now).ToList();
+                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserId && x.EndDate >= DateTime.Now).OrderBy(x => x.StartDate).ToList();
                 var assignname = db.User.Where(x => x.UserId == UserId).FirstOrDefault();
                 obj.Assignname = assignname.UserName;
             }
@@ -352,9 +365,6 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             }
             return View(obj);
         }
-
-
-
 
         [HttpPost]
         public ActionResult ShiftSchedules(ShiftScheduleVM objShift)
@@ -449,48 +459,109 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         }
 
 
-        public ActionResult ScheduleList()
+        public ActionResult ScheduleList(int? year, int? month, int? day)
         {
+            DateTime chosenDate = (year != null && month != null && day != null) ? new DateTime(year.Value, month.Value, day.Value) : DateTime.Now.Date;
+            ViewBag.chosenDate = chosenDate;
+            var previousDate = chosenDate.AddDays(-1);
             UserVM obj = new UserVM();
 
-            try
+            if(chosenDate != DateTime.Now.Date) 
             {
-                var user = db.User.Where(m => m.UserRole == 2);
-                if (user != null)
+                var userList = db.User.Where(x => x.UserId > 10).OrderBy(x=>x.LastName).ToList();
+                var shiftCheck = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) == chosenDate.Date || DbFunctions.TruncateTime(x.StartDate) == previousDate.Date).ToList();
+                //var shiftCheck = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) == chosenDate.Date).ToList();
+                //shiftCheck = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) == chosenDate.Date.AddDays(-1)).ToList();
+                for (int i = userList.Count - 1; i >= 0; i--)
                 {
-                    obj.userList = user.Select(s => new UserVM
+                    var userToRemove = userList[i];
+                    if (shiftCheck.Any(x => x.UserId == userToRemove.UserId))
                     {
-                        UserId = s.UserId,
-                        FirstName = s.FirstName,
-                        LastName = s.LastName,
-                        Address = s.Address,
-                        Sex = s.Sex,
-                        DOB = (DateTime)s.DOB,
-                        ZipCode = s.ZipCode,
-                        City = s.City,
-                        Province = s.Province,
-                        Email = s.Email,
-                        CellPhone = s.CellPhone,
-                        UserRole = s.UserRole,
-                        MaritalStatusId = s.MaritalStatusId,
-                        UserName = s.UserName,
-                        Password = s.Password,
-                        Image = s.Image,
-                        Note = s.Note,
-                        Fax = s.Fax,
+                        userList.RemoveAt(i);
+                    }
+                }
+                try
+                {
+                    var user = db.User.Where(m => m.UserRole == 2);
+                    if (user != null)
+                    {
+                        obj.userList = userList.Select(s => new UserVM
+                        {
+                            UserId = s.UserId,
+                            FirstName = s.FirstName,
+                            LastName = s.LastName,
+                            Address = s.Address,
+                            Sex = s.Sex,
+                            DOB = (DateTime)s.DOB,
+                            ZipCode = s.ZipCode,
+                            City = s.City,
+                            Province = s.Province,
+                            Email = s.Email,
+                            CellPhone = s.CellPhone,
+                            UserRole = s.UserRole,
+                            MaritalStatusId = s.MaritalStatusId,
+                            UserName = s.UserName,
+                            Password = s.Password,
+                            Image = s.Image,
+                            Note = s.Note,
+                            Fax = s.Fax,
+                            NurseCertification = (DateTime)s.NurseCertification,
 
-                        FullName = s.FirstName + "" + s.LastName,
-                        GenderName = s.Gender.GenderName,
-                        MaritalStatus = s.MaritalStatus.MaritalStatusName,
-                    }).ToList();
+                            FullName = s.FirstName + "" + s.LastName,
+                            GenderName = s.Gender.GenderName,
+                            MaritalStatus = s.MaritalStatus.MaritalStatusName,
+                        }).ToList();
+                        obj.userList = obj.userList.OrderBy(x => x.LastName).ToList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred: " + ex.Message);
                 }
             }
-            catch (Exception ex)
+            else 
             {
+                try
+                {
+                    var user = db.User.Where(m => m.UserRole == 2);
+                    if (user != null)
+                    {
+                        obj.userList = user.Select(s => new UserVM
+                        {
+                            UserId = s.UserId,
+                            FirstName = s.FirstName,
+                            LastName = s.LastName,
+                            Address = s.Address,
+                            Sex = s.Sex,
+                            DOB = (DateTime)s.DOB,
+                            ZipCode = s.ZipCode,
+                            City = s.City,
+                            Province = s.Province,
+                            Email = s.Email,
+                            CellPhone = s.CellPhone,
+                            UserRole = s.UserRole,
+                            MaritalStatusId = s.MaritalStatusId,
+                            UserName = s.UserName,
+                            Password = s.Password,
+                            Image = s.Image,
+                            Note = s.Note,
+                            Fax = s.Fax,
+                            NurseCertification = (DateTime)s.NurseCertification,
 
+                            FullName = s.FirstName + "" + s.LastName,
+                            GenderName = s.Gender.GenderName,
+                            MaritalStatus = s.MaritalStatus.MaritalStatusName,
+                        }).ToList();
+                        obj.userList = obj.userList.OrderBy(x => x.LastName).ToList();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred: " + ex.Message);
+                }
             }
             return View(obj);
-
         }
 
         #endregion Shift Schedule

@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var sno = 0;
     var sno1 = 0;
+    var now = DateTime.Now.Date;
 }
 <style>
 
@@ -47,21 +48,41 @@
                                 <tr>
                                     <th class="footable-sortable text-center">S.No<span class="footable-sort-indicator"></span></th>
                                     <th class="footable-sortable text-center">Name<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable text-center">Email<span class="footable-sort-indicator"></span></th>
                                     <th class="footable-sortable text-center">Cell Phone<span class="footable-sort-indicator"></span></th>
                                     <th class="footable-sortable text-center">Date Of Birth<span class="footable-sort-indicator"></span></th>
+                                    <th class="footable-sortable text-center">Nurse Certification Status<span class="footable-sort-indicator"></span></th>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @if (Model.userList != null)
                                 {
+
                                     foreach (var item in Model.userList)
                                     {
                                         sno = sno + 1;
                                         <tr role="row" class="line-content">
                                             <td class="text-center">@sno</td>
                                             <td class="text-center">@item.LastName, @item.FirstName</td>
+                                            <td class="text-center">@item.Email</td>
                                             <td class="text-center">@item.CellPhone</td>
                                             <td class="text-center">@(item.DOB != null ? string.Format("{0:MMMM d , yyyy}", item.DOB) : "")</td>
+                                            @if (now < item.NurseCertification)
+                                            {
+                                                if (item.NurseCertification - now > now.AddMonths(1) - now)
+                                                {
+                                                    <td class="text-center" style="color:green">Good Until: (@string.Format("{0:MMMM d , yyyy}", item.NurseCertification.Date)) </td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="text-center" style="color:orange">Expiring: (@string.Format("{0:MMMM d , yyyy}", item.NurseCertification)) </td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center" style="color:red">Expired: (@string.Format("{0:MMMM d , yyyy}", item.NurseCertification)) </td>
+                                            }
                                         </tr>
                                     }
                                 }

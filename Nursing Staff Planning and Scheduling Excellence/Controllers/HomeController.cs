@@ -44,6 +44,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         MaritalStatusId = s.MaritalStatusId,
                         UserName = s.UserName,
                         Password = s.Password,
+                        NurseCertification = (DateTime)s.NurseCertification,
      
                         Image = s.Image,
                         Specialization = s.Specialization,
@@ -52,7 +53,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         FullName = s.FirstName + "" + s.LastName,
                         GenderName = s.Gender.GenderName,
                         MaritalStatus = s.MaritalStatus.MaritalStatusName,
-                    }).ToList();
+                    }).OrderBy(x=>x.LastName).ToList();
                 }
                 return View(obj);
 

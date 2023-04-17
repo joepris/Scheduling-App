@@ -345,19 +345,10 @@
     <Content Include="Content\css\spinners.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\Images\1.jpg" />
-    <Content Include="Content\Images\2.jpg" />
-    <Content Include="Content\Images\agent.jpg" />
-    <Content Include="Content\Images\d1.jpg" />
-    <Content Include="Content\Images\d2.jpg" />
-    <Content Include="Content\Images\d3.jpg" />
-    <Content Include="Content\Images\d4.jpg" />
-    <Content Include="Content\Images\d5.jpg" />
     <Content Include="Content\Images\imac.png" />
     <Content Include="Content\Images\img1.jpg" />
     <Content Include="Content\Images\img4.jpg" />
     <Content Include="Content\Images\No-Image.jpg" />
-    <Content Include="Content\Images\pawandeep.jpg" />
     <Content Include="Content\Images\weather-bg.jpg" />
     <Content Include="Content\js\cbpFWTabs.js" />
     <Content Include="Content\js\chat.js" />
@@ -2245,6 +2236,7 @@
     <Content Include="Content\themes\base\datepicker.css" />
     <Content Include="Content\themes\base\dialog.css" />
     <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\st-ory.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -3157,6 +3149,7 @@
     <Content Include="Views\Admin\StaffDetails.cshtml" />
     <Content Include="Views\Staff\ShiftSchedule.cshtml" />
     <Content Include="Views\Admin\StaffGap.cshtml" />
+    <Content Include="Views\Shared\_Signature.cshtml" />
     <None Include="Views\Staff\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
