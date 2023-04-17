@@ -285,7 +285,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             };
 
                 staffDetails.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == id && DbFunctions.TruncateTime(x.StartDate) <= chosenDate.Date && chosenDate.Date <= DbFunctions.TruncateTime(x.EndDate)).ToList();
-                staffDetails.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == id).OrderBy(x => x.StartDate).ToList();
+                staffDetails.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == id).OrderByDescending(x => x.StartDate).ToList();
                 return View(staffDetails);
             }
 
@@ -309,8 +309,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             try
             {
                 ShiftGapVM shiftgap = new ShiftGapVM();
-                shiftgap.AllUsers = db.User.ToList();
-                shiftgap.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.Id > 0).ToList(); // get all schedules
+                shiftgap.AllUsers = db.User.OrderBy(x => x.LastName).ToList();
+                shiftgap.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.Id > 0).OrderBy(x=>x.StartDate).ToList(); // get all schedules
                 return View(shiftgap);
             }
             catch (Exception ex)

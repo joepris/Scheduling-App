@@ -13,6 +13,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 {
@@ -234,6 +235,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         [HttpGet]
         public ActionResult ShiftSchedule(int? year, int? month, int? day, int? chosenYear, int? chosenMonth)
         {
+            
             DateTime monthSelected = (chosenYear != null && chosenMonth != null) ? new DateTime(chosenYear.Value, chosenMonth.Value, day != null ? day.Value : DateTime.Now.Day) : DateTime.Now.Date;
             ViewBag.chosenMonth = monthSelected;
 
@@ -241,11 +243,29 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             ViewBag.chosenDate = chosenDate;
 
             int UserID = LoginRepository.GetUserID(User.Identity.Name);
+            var now = DateTime.Now.Date;
+            var user = db.User.Where(x => x.UserId == UserID).FirstOrDefault();
+            var oneMonth = DateTime.Now.AddMonths(1) - now;
+            if(now < user.NurseCertification)
+            {
+                if(user.NurseCertification - now > oneMonth)
+                {
+                    TempData["Message"] = string.Format("You have Successfully Logged in.");
+                }
+                else
+                {
+                    TempData["DeleteMessage"] = string.Format("Your Nurse Certification is Expiring.");
+                }
+            }
+            else 
+            {
+                TempData["DeleteMessage"] = string.Format("Your Nurse Certification has Expired.");
+            }
             ShiftScheduleVM obj = new ShiftScheduleVM();
             try
             {
-                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserID && DbFunctions.TruncateTime(x.StartDate) <= chosenDate.Date && chosenDate.Date <= DbFunctions.TruncateTime(x.EndDate)).ToList();
-                obj.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == UserID).ToList();
+                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserID && DbFunctions.TruncateTime(x.StartDate) <= now && now <= DbFunctions.TruncateTime(x.EndDate)).ToList();
+                obj.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == UserID).OrderByDescending(x => x.StartDate).ToList();
             }
             catch (Exception ex)
             {
