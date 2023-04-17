@@ -64,7 +64,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         FullName = s.FirstName + "" + s.LastName,
                         GenderName = s.Gender.GenderName,
                         MaritalStatus = s.MaritalStatus.MaritalStatusName,
-                    }).ToList();
+                    }).OrderBy(x=>x.LastName).ToList();
                 }
                
             }
@@ -468,7 +468,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
 
             if(chosenDate != DateTime.Now.Date) 
             {
-                var userList = db.User.Where(x => x.UserId > 10).ToList();
+                var userList = db.User.Where(x => x.UserId > 10).OrderBy(x=>x.LastName).ToList();
                 var shiftCheck = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) == chosenDate.Date || DbFunctions.TruncateTime(x.StartDate) == previousDate.Date).ToList();
                 //var shiftCheck = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) == chosenDate.Date).ToList();
                 //shiftCheck = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) == chosenDate.Date.AddDays(-1)).ToList();
@@ -511,6 +511,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                             GenderName = s.Gender.GenderName,
                             MaritalStatus = s.MaritalStatus.MaritalStatusName,
                         }).ToList();
+                        obj.userList = obj.userList.OrderBy(x => x.LastName).ToList();
                     }
                 }
                 catch (Exception ex)
@@ -551,6 +552,8 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                             GenderName = s.Gender.GenderName,
                             MaritalStatus = s.MaritalStatus.MaritalStatusName,
                         }).ToList();
+                        obj.userList = obj.userList.OrderBy(x => x.LastName).ToList();
+
                     }
                 }
                 catch (Exception ex)

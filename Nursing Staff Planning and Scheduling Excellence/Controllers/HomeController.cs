@@ -53,7 +53,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         FullName = s.FirstName + "" + s.LastName,
                         GenderName = s.Gender.GenderName,
                         MaritalStatus = s.MaritalStatus.MaritalStatusName,
-                    }).ToList();
+                    }).OrderBy(x=>x.LastName).ToList();
                 }
                 return View(obj);
 
