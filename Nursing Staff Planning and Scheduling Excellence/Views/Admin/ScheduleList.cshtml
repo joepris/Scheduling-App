@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var sno = 0;
     DateTime chosenDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : null;
+    var now = DateTime.Now.Date;
 }
 
 <div id="page-wrapper">
@@ -34,6 +35,7 @@
                                     <th scope="col">Cell Phone</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Date Of Birth</th>
+                                    <th scope="col">Nurse Certification</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -50,6 +52,21 @@
                                             <td>@user.CellPhone</td>
                                             <td>@user.Email</td>
                                             <td>@(user.DOB != null ? string.Format("{0:MMMM d , yyyy}", user.DOB) : "")</td>
+                                            @if (now < user.NurseCertification)
+                                            {
+                                                if (user.NurseCertification - now > now.AddMonths(1) - now)
+                                                {
+                                                    <td class="text-center" style="color:green">Good</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="text-center" style="color:orange">Expiring</td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center" style="color:red">Expired</td>
+                                            }
                                             <td>
                                                 <a class="fcbtn btn btn-info btn-outline btn-1f" href="~/Admin/ShiftSchedule/?userid=@user.UserId">Schedule </a>
                                                 @*<a class="fcbtn btn btn-info btn-outline btn-1f" href="~/Admin/ShiftSchedule/?userid=@user.UserId">Schedule Records</a>*@
