@@ -118,14 +118,14 @@
                                     </thead>
                                     <tbody>
                                         @{
-                                            var now = ViewBag.chosenMonth != null ? ViewBag.chosenMonth : DateTime.Now.Date;
+                                            var nowDay = ViewBag.chosenDate != null ? ViewBag.chosenDate : DateTime.Now.Date;
                                         }
                                         @if (Model.ShiftScheduleList != null)
                                         {
                                             {
                                                 foreach (var item in Model.WholeCalendarShifts)
                                                 {
-                                                    if (item.StartDate.Value.Date >= now || item.EndDate.Value.Date == now)
+                                                    if (item.StartDate.Value.Date >= nowDay || item.EndDate.Value.Date == nowDay)
                                                     {
                                                         sno = sno + 1;
                                                         <tr role="row" class="line-content">
@@ -150,6 +150,7 @@
                             <div class="panel-heading "> My Calendar</div>
                             <div class="white-box">
                                 @{
+                                    var now = ViewBag.chosenMonth != null ? ViewBag.chosenMonth : DateTime.Now.Date;
                                     var daysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
                                     var firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
                                     var lastDayOfMonth = new DateTime(now.Year, now.Month, daysInMonth);
@@ -160,8 +161,8 @@
 
                                 <div class="month-control">
                                     <h2 class="month-h2">@now.ToString("MMMM yyyy")</h2>
-                                    <a href="@Url.Action("ShiftSchedule", new { year = previousMonth.Year, month = previousMonth.Month })">&lt; Previous Month</a> --|--
-                                    <a href="@Url.Action("ShiftSchedule", new { year = nextMonth.Year, month = nextMonth.Month })">Next Month &gt;</a>
+                                    <a href="@Url.Action("ShiftSchedule", new { year = now.Year, month = now.Month, day = now.Day, chosenYear = previousMonth.Year, chosenMonth = previousMonth.Month })">&lt; Previous Month</a> --|--
+                                    <a href="@Url.Action("ShiftSchedule", new { year = now.Year, month = now.Month, day = now.Day, chosenYear = nextMonth.Year, chosenMonth = nextMonth.Month })">Next Month &gt;</a>
                                 </div>
 
                                 <table class="table-schedule">

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -35,6 +36,40 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 UserIDs = UserID??0;
             }
             UserVM obj = new UserVM();
+            DateTime currentdate = DateTime.Now.Date;
+
+            //var shifts = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) >= currentdate && x.UserId == UserIDs).OrderBy(x => x.StartDate).FirstOrDefault();
+            var c = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) >= currentdate && x.UserId == UserIDs).OrderBy(x => x.StartDate).FirstOrDefault();
+
+            if(c != null) 
+            {
+                if (c.StartDate.Value.Date == currentdate) 
+                {
+                    if (c.EndTime > DateTime.Now.TimeOfDay)
+
+                    {
+                        ViewBag.CurrentStartTimer = c.StartDate;
+                        ViewBag.Enddate = c.EndDate;
+                        obj.Enddate = Convert.ToString(c.EndTime);
+                        ViewBag.StartTime = c.StartTime;
+                    }
+
+                    else
+                    {
+                        obj.Enddate = "";
+                    }
+                }
+                
+            }
+            
+
+            var time = DateTime.Now.AddDays(1);
+            var Timer = db.ShiftSchedule.Where(x => DbFunctions.TruncateTime(x.StartDate) >= DbFunctions.TruncateTime(time) && x.UserId == UserIDs).OrderBy(x => x.StartDate).FirstOrDefault();
+            if (Timer != null)
+
+            {
+                ViewBag.Timer = Timer.StartDate;
+            }
             try
             {
                 if (UserIDs != null)
@@ -59,6 +94,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     obj.UserRole = task.UserRole;
                     obj.Note = task.Note;
                     obj.Fax = task.Fax;
+                    obj.NurseCertification = (DateTime)task.NurseCertification;
 
                     obj.GenderName = task.Gender?.GenderName;
                     obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
@@ -184,6 +220,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                         user.DOB = userDetails.DOB;
                         user.UserRole = 2;
                         user.Email = userDetails.Email;
+                        user.NurseCertification = userDetails.NurseCertification;
       
                         db.Entry(user).State = EntityState.Modified;
                     }
@@ -197,7 +234,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         [HttpGet]
         public ActionResult ShiftSchedule(int? year, int? month, int? day, int? chosenYear, int? chosenMonth)
         {
-            DateTime monthSelected = (chosenYear != null && chosenMonth != null) ? new DateTime(year.Value, month.Value, DateTime.Now.Day) : DateTime.Now.Date;
+            DateTime monthSelected = (chosenYear != null && chosenMonth != null) ? new DateTime(chosenYear.Value, chosenMonth.Value, day != null ? day.Value : DateTime.Now.Day) : DateTime.Now.Date;
             ViewBag.chosenMonth = monthSelected;
 
             DateTime chosenDate = (year != null && month != null && day != null) ? new DateTime(year.Value, month.Value, day.Value) : DateTime.Now.Date;
