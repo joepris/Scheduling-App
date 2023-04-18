@@ -101,8 +101,33 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                     obj.MaritalStatus = task.MaritalStatus?.MaritalStatusName;
 
                 }
+                var nextShiftStart = db.ShiftSchedule.OrderBy(x => x.StartDate).Where(x => x.UserId == UserIDs && (x.StartDate > DateTime.Now || x.StartDate < DateTime.Now && x.EndDate > DateTime.Now)).FirstOrDefault();
+                if (nextShiftStart != null)
+                {
+                    TimeSpan timeUntilNextShift;
+                    if (DateTime.Now < nextShiftStart.StartDate)
+                    {
+                        timeUntilNextShift = nextShiftStart.StartDate.Value - DateTime.Now;
+                        ViewBag.IsCountingDownToShiftStart = true;
+                    }
+                    else if (DateTime.Now < nextShiftStart.EndDate)
+                    {
+                        timeUntilNextShift = nextShiftStart.EndDate.Value - DateTime.Now;
+                        ViewBag.IsCountingDownToShiftStart = false;
+                    }
+                    else
+                    {
+                        timeUntilNextShift = nextShiftStart.StartDate.Value - DateTime.Now;
+                        ViewBag.IsCountingDownToShiftStart = true;
+                    }
+                    ViewBag.CountHours = timeUntilNextShift.Hours;
+                    ViewBag.CountHours += timeUntilNextShift.Days * 24;
+                    ViewBag.CountMinutes = timeUntilNextShift.Minutes;
+                    ViewBag.CountSeconds = timeUntilNextShift.Seconds;
+                }
 
             }
+            
             catch (Exception ex)
             {
                 return View("Error");
@@ -242,15 +267,19 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             DateTime chosenDate = (year != null && month != null && day != null) ? new DateTime(year.Value, month.Value, day.Value) : DateTime.Now.Date;
             ViewBag.chosenDate = chosenDate;
 
+           
+
             int UserID = LoginRepository.GetUserID(User.Identity.Name);
             var now = DateTime.Now.Date;
             var user = db.User.Where(x => x.UserId == UserID).FirstOrDefault();
             var oneMonth = DateTime.Now.AddMonths(1) - now;
-            if(now < user.NurseCertification)
+            
+
+            if (now < user.NurseCertification)
             {
                 if(user.NurseCertification - now > oneMonth)
                 {
-                    TempData["Message"] = string.Format("You have Successfully Logged in.");
+                    //TempData["Message"] = string.Format("You have Successfully Logged in.");
                 }
                 else
                 {
@@ -262,10 +291,38 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 TempData["DeleteMessage"] = string.Format("Your Nurse Certification has Expired.");
             }
             ShiftScheduleVM obj = new ShiftScheduleVM();
+
+            var nextShiftStart = db.ShiftSchedule.OrderBy(x => x.StartDate).Where(x => x.UserId == UserID && (x.StartDate > DateTime.Now || x.StartDate<DateTime.Now && x.EndDate>DateTime.Now)).FirstOrDefault();
+            if(nextShiftStart != null) 
+            {
+                TimeSpan timeUntilNextShift;
+                if (DateTime.Now < nextShiftStart.StartDate)
+                {
+                    timeUntilNextShift = nextShiftStart.StartDate.Value - DateTime.Now;
+                    obj.IsCountingDownToShiftStart = true;
+                }
+                else if (DateTime.Now < nextShiftStart.EndDate)
+                {
+                    timeUntilNextShift = nextShiftStart.EndDate.Value - DateTime.Now;
+                    obj.IsCountingDownToShiftStart = false;
+                }
+                else
+                {
+                    timeUntilNextShift = nextShiftStart.StartDate.Value - DateTime.Now;
+                    obj.IsCountingDownToShiftStart = true;
+                }
+                obj.CountHours = timeUntilNextShift.Hours;
+                obj.CountHours += timeUntilNextShift.Days * 24;
+                obj.CountMinutes = timeUntilNextShift.Minutes;
+                obj.CountSeconds = timeUntilNextShift.Seconds;
+            }
+            
+
             try
             {
-                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserID && DbFunctions.TruncateTime(x.StartDate) <= now && now <= DbFunctions.TruncateTime(x.EndDate)).ToList();
+                obj.ShiftScheduleList = db.ShiftSchedule.Where(x => x.UserId == UserID && DbFunctions.TruncateTime(x.StartDate) <= chosenDate.Date && chosenDate.Date <= DbFunctions.TruncateTime(x.EndDate)).ToList();
                 obj.WholeCalendarShifts = db.ShiftSchedule.Where(x => x.UserId == UserID).OrderByDescending(x => x.StartDate).ToList();
+                
             }
             catch (Exception ex)
             {

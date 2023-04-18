@@ -22,7 +22,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
         {
             UserVM obj = new UserVM();
           
-                var user = db.User.Where(m => m.UserRole == 2);
+                var user = db.User.Where(m => m.UserId > 10);
                 if (user != null)
                 {
                     obj.userList = user.Select(s => new UserVM
