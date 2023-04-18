@@ -134,4 +134,9 @@ INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [Star
 INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14119, 6019, N'2023-04-16 08:00:00', N'2023-04-16 20:00:00', N'08:00:00', N'20:00:00', NULL)
 INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14120, 6019, N'2023-04-17 08:00:00', N'2023-04-17 20:00:00', N'08:00:00', N'20:00:00', NULL)
 INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14121, 6019, N'2023-04-18 08:00:00', N'2023-04-18 20:00:00', N'08:00:00', N'20:00:00', NULL)
+INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14123, 6020, N'2023-04-20 08:00:00', N'2023-04-20 16:00:00', N'08:00:00', N'16:00:00', NULL)
+INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14124, 6020, N'2023-04-21 08:00:00', N'2023-04-21 16:00:00', N'08:00:00', N'16:00:00', NULL)
+INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14128, 6020, N'2023-04-19 08:00:00', N'2023-04-19 16:00:00', N'08:00:00', N'16:00:00', NULL)
+INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14129, 6020, N'2023-04-16 20:00:00', N'2023-04-17 04:00:00', N'20:00:00', N'04:00:00', NULL)
+INSERT INTO [dbo].[ShiftSchedule] ([Id], [UserId], [StartDate], [EndDate], [StartTime], [EndTime], [ShiftId]) VALUES (14130, 6022, N'2023-04-17 23:00:00', N'2023-04-18 07:00:00', N'23:00:00', N'07:00:00', NULL)
 SET IDENTITY_INSERT [dbo].[ShiftSchedule] OFF
