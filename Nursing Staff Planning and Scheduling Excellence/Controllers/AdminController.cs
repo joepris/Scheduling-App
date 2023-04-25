@@ -1,4 +1,4 @@
-﻿using DayPilot.Utils;
+using DayPilot.Utils;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -132,13 +132,13 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
             if ((DateTime.Now < objuser.DOB))
             {
                 TempData["DeleteMessage"] = string.Format("User can't be from the future");
-                return RedirectToAction("AddStaff");
+                return View("AddStaff", objuser);
             }
             TimeSpan age = DateTime.Now - objuser.DOB;
             if (age < new TimeSpan(157788, 0, 0))
             {
                 TempData["DeleteMessage"] = string.Format("User should atleast be 18 years old");
-                return RedirectToAction("AddStaff");
+                return View("AddStaff", objuser);
             }
             var sh = db.User.Where(x => x.Email == objuser.Email).FirstOrDefault();
             var checkUserDb = db.User.Where(x => x.UserId == objuser.UserId).FirstOrDefault();
@@ -148,14 +148,14 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 if(sh != checkUserDb)
                 {
                     TempData["DeleteMessage"] = string.Format("Email already in use");
-                    return RedirectToAction("AddStaff");
+                    return View("AddStaff", objuser);
                 }
             }
             if (sh2 != null) {
                 if (sh2 != checkUserDb)
                 {
                     TempData["DeleteMessage"] = string.Format("User name already in use");
-                    return RedirectToAction("AddStaff");
+                    return View("AddStaff", objuser);
                 }           
             }
             if (objuser.UserId == 0)
@@ -216,6 +216,7 @@ namespace NursingStaffPlanningandSchedulingExcellence.Controllers
                 return RedirectToAction("AllStaffList");
             } catch (Exception ex) {
                 Console.WriteLine(ex);
+                TempData["DeleteMessage"] = string.Format("An Error Occured");
                 return RedirectToAction("AddStaff");
             }
 
